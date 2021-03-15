@@ -7,7 +7,7 @@ ENV SCALA_VERSION 2.12.13
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 
-# Install Java.
+# Install Java
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository -y ppa:openjdk-r/ppa && \
@@ -28,6 +28,7 @@ RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.lis
     apt-get update && \
     apt-get install -y sbt
 
+#Install nodejs and npm
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_15.x | bash - && \
