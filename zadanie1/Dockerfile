@@ -7,7 +7,7 @@ ENV SCALA_VERSION 2.12.13
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 
-# Install Java
+# Install Java v1.8
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository -y ppa:openjdk-r/ppa && \
@@ -17,20 +17,28 @@ RUN apt-get update && \
     update-alternatives --config java && \
     update-alternatives --config javac
 
-#Install Scala
+#Install Scala v.2.12.13
 RUN apt-get install -y wget && \
     wget www.scala-lang.org/files/archive/scala-$SCALA_VERSION.deb && \
     dpkg -i scala-$SCALA_VERSION.deb
 
-#Install SBT
+#Install latest SBT
 RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list && \
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 && \
     apt-get update && \
     apt-get install -y sbt
 
-#Install nodejs and npm
+#Install latest NodeJS and latest NPM
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_15.x | bash - && \
     apt-get update && \
     apt-get install -y nodejs
+
+#React app
+EXPOSE 3000
+
+# Play app
+EXPOSE 9000
+
+VOLUME /folder_name
