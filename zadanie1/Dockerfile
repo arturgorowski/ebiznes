@@ -41,4 +41,4 @@ EXPOSE 3000
 # Play app
 EXPOSE 9000
 
-VOLUME /folder_name
+VOLUME /volume_folder
