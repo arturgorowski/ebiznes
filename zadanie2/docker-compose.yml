@@ -1,0 +1,10 @@
+version: '3'
+services:
+  backend:
+    build: .
+    ports:
+      - 9000:9000
+    volumes:
+      - ./play-crud:/home/arturgorowski/projekt/play-crud
+    working_dir: /home/arturgorowski/projekt/play-crud
+    command: bash -c "source /home/arturgorowski/.sdkman/bin/sdkman-init.sh && sbt run"
