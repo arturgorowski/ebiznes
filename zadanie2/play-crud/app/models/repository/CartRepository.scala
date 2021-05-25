@@ -20,13 +20,13 @@ class CartRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         def id = column[Long]("id")
 
         def customer = column[Long]("customer")
-//        def customer_fk = foreignKey("customer_fk", customer, customerVal)(_.id)
+        def customer_fk = foreignKey("customer_fk", customer, customerVal)(_.id)
 
         def productsQuantity = column[Int]("productsQuantity")
         def totalProductsPrice = column[BigDecimal]("totalProductsPrice")
 
         def coupon = column[Long]("coupon")
-//        def coupon_fk = foreignKey("coupon_fk", coupon, couponVal)(_.id)
+        def coupon_fk = foreignKey("coupon_fk", coupon, couponVal)(_.id)
 
         def createdAt = column[String]("createdAt")
 
