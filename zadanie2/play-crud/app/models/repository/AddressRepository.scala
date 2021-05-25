@@ -1,8 +1,10 @@
-package models
+package models.repository
 
-import javax.inject.{Inject, Singleton}
+import models.Address
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
+
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

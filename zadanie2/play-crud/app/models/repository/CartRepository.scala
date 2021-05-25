@@ -1,15 +1,17 @@
-package models
+package models.repository
 
-import javax.inject.{ Inject, Singleton }
+import models.Cart
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-import scala.concurrent.{ Future, ExecutionContext }
+
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CartRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
-                                customerRepository: CustomerRepository,
-                                couponRepository: CouponRepository)(implicit ec: ExecutionContext) {
-    private val dbConfig = dbConfigProvider.get[JdbcProfile]
+                                val customerRepository: CustomerRepository,
+                                val couponRepository: CouponRepository)(implicit ec: ExecutionContext) {
+    val dbConfig = dbConfigProvider.get[JdbcProfile]
 
     import dbConfig._
     import profile.api._
@@ -18,23 +20,23 @@ class CartRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         def id = column[Long]("id")
 
         def customer = column[Long]("customer")
-        def customer_fk = foreignKey("customer_fk", customer, customerVal)(_.id)
+//        def customer_fk = foreignKey("customer_fk", customer, customerVal)(_.id)
 
         def productsQuantity = column[Int]("productsQuantity")
         def totalProductsPrice = column[BigDecimal]("totalProductsPrice")
 
         def coupon = column[Long]("coupon")
-        def coupon_fk = foreignKey("coupon_fk", coupon, couponVal)(_.id)
+//        def coupon_fk = foreignKey("coupon_fk", coupon, couponVal)(_.id)
 
         def createdAt = column[String]("createdAt")
 
         def * = (id, customer, productsQuantity, totalProductsPrice, coupon, createdAt) <> ((Cart.apply _).tupled, Cart.unapply)
     }
 
-    import customerRepository.CustomerTable
     import couponRepository.CouponTable
+    import customerRepository.CustomerTable
 
-    private val cart = TableQuery[CartTable]
+    val cart = TableQuery[CartTable]
     private val customerVal = TableQuery[CustomerTable]
     private val couponVal = TableQuery[CouponTable]
 

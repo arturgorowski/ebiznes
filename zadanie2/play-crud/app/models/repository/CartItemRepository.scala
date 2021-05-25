@@ -1,20 +1,22 @@
-package models
+package models.repository
 
-import javax.inject.{ Inject, Singleton }
+import models.CartItem
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-import scala.concurrent.{ Future, ExecutionContext }
+
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CartItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
-                                    cartRepository: CartRepository,
-                                    productRepository: ProductRepository)(implicit ec: ExecutionContext) {
-    private val dbConfig = dbConfigProvider.get[JdbcProfile]
+                                    val cartRepository: CartRepository,
+                                    val productRepository: ProductRepository)(implicit ec: ExecutionContext) {
+    val dbConfig = dbConfigProvider.get[JdbcProfile]
 
     import dbConfig._
     import profile.api._
 
-    class CartItemTable(tag: Tag) extends Table[CartItem](tag, "cart_item") {
+    private class CartItemTable(tag: Tag) extends Table[CartItem](tag, "cart_item") {
         def id = column[Long]("id")
 
         def cart = column[Long]("cart")

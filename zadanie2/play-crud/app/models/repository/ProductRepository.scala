@@ -1,14 +1,16 @@
-package models
+package models.repository
 
-import javax.inject.{ Inject, Singleton }
+import models.Product
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-import scala.concurrent.{ Future, ExecutionContext }
+
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ProductRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
-                                   categoryRepository: CategoryRepository)(implicit ec: ExecutionContext) {
-    private val dbConfig = dbConfigProvider.get[JdbcProfile]
+                                   val categoryRepository: CategoryRepository)(implicit ec: ExecutionContext) {
+    val dbConfig = dbConfigProvider.get[JdbcProfile]
 
     import dbConfig._
     import profile.api._
@@ -41,9 +43,8 @@ class ProductRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
 
     import categoryRepository.CategoryTable
 
-    private val product = TableQuery[ProductTable]
-
-    private val cat = TableQuery[CategoryTable]
+    val product = TableQuery[ProductTable]
+    val cat = TableQuery[CategoryTable]
 
 
     /**

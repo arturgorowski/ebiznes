@@ -1,13 +1,15 @@
-package models
+package models.repository
 
-import javax.inject.{ Inject, Singleton }
+import models.Coupon
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-import scala.concurrent.{ Future, ExecutionContext }
+
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CouponRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
-    private val dbConfig = dbConfigProvider.get[JdbcProfile]
+    val dbConfig = dbConfigProvider.get[JdbcProfile]
 
     import dbConfig._
     import profile.api._
@@ -25,7 +27,7 @@ class CouponRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(impl
     }
 //    id: Long, code: Long, couponType: String, discount: BigDecimal, isActive: Boolean, createdAt: String, usedAt: String
 
-    private val coupon = TableQuery[CouponTable]
+    val coupon = TableQuery[CouponTable]
 
     def create(code: Long, couponType: String, discount: BigDecimal, isActive: Boolean, createdAt: String, usedAt: String): Future[Coupon] = db.run {
         (coupon.map(c => (c.code, c.couponType, c.discount, c.isActive, c.createdAt, c.usedAt))

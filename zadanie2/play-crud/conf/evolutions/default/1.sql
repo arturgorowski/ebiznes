@@ -1,4 +1,4 @@
-# --- !Ups
+--- !Ups
 
 CREATE TABLE "address"
 (
@@ -80,7 +80,7 @@ CREATE TABLE "order_item"
     "id"      INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "order"   INTEGER NOT NULL,
     "product" INTEGER NOT NULL,
-    FOREIGN KEY (order) references order (id),
+    FOREIGN KEY ('order') references 'order' (id),
     FOREIGN KEY (product) references product (id)
 );
 
@@ -88,7 +88,7 @@ CREATE TABLE "product"
 (
     "id"       INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name"     VARCHAR NOT NULL,
-    "name"     TEXT    NOT NULL,
+    "description"     TEXT    NOT NULL,
     "price"    DECIMAL NOT NULL,
     "category" INTEGER NOT NULL,
     FOREIGN KEY (category) references category (id)
@@ -106,7 +106,7 @@ CREATE TABLE "review"
 );
 
 
-# --- !Downs
+--- !Downs
 
 DROP TABLE "address";
 DROP TABLE "cart";

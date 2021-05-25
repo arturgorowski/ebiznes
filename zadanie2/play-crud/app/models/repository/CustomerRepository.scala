@@ -1,5 +1,6 @@
-package models
+package models.repository
 
+import models.Customer
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
@@ -8,8 +9,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CustomerRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
-                                    addressRepository: AddressRepository)(implicit ec: ExecutionContext) {
-    private val dbConfig = dbConfigProvider.get[JdbcProfile]
+                                    val addressRepository: AddressRepository)(implicit ec: ExecutionContext) {
+    val dbConfig = dbConfigProvider.get[JdbcProfile]
 
     import dbConfig._
     import profile.api._
@@ -38,7 +39,7 @@ class CustomerRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
     }
 
     import addressRepository.AddressTable
-    val customer = TableQuery[CustomerTable]
+    private val customer = TableQuery[CustomerTable]
     val addressVal = TableQuery[AddressTable]
 
     def create(username: String, firstName: String, lastName: String, password: String, salt: String, createdAt: String, address: Int): Future[Customer] = db.run {

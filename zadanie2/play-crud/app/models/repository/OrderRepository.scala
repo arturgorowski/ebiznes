@@ -1,14 +1,16 @@
-package models
+package models.repository
 
-import javax.inject.{Inject, Singleton}
+import models.Order
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
+
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
-                                customerRepository: CustomerRepository,
-                                couponRepository: CouponRepository)(implicit ec: ExecutionContext) {
+                                val customerRepository: CustomerRepository,
+                                val couponRepository: CouponRepository)(implicit ec: ExecutionContext) {
     val dbConfig = dbConfigProvider.get[JdbcProfile]
 
     import dbConfig._
@@ -28,12 +30,12 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
         def * = (id, createdAt, customer, isPaid, paidAt, totalOrderValue, coupon) <> ((Order.apply _).tupled, Order.unapply)
     }
 
-    import customerRepository.CustomerTable
     import couponRepository.CouponTable
+    import customerRepository.CustomerTable
 
-    private val order = TableQuery[OrderTable]
-    private val customerVal = TableQuery[CustomerTable]
-    private val couponVal = TableQuery[CouponTable]
+    val order = TableQuery[OrderTable]
+    val customerVal = TableQuery[CustomerTable]
+    val couponVal = TableQuery[CouponTable]
 
     def create(createdAt: String, customer: Long, isPaid: Boolean, paidAt: String, totalOrderValue: Int, coupon: Long): Future[Order] = db.run {
         (order.map(o => (o.createdAt, o.customer, o.isPaid, o.paidAt, o.totalOrderValue, o.coupon))

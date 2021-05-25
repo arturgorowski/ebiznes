@@ -1,20 +1,22 @@
-package models
+package models.repository
 
+import models.Review
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ReviewRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
-                                  productRepository: ProductRepository,
-                                  customerRepository: CustomerRepository)(implicit ec: ExecutionContext) {
-    private val dbConfig = dbConfigProvider.get[JdbcProfile]
+                                  val productRepository: ProductRepository,
+                                  val customerRepository: CustomerRepository)(implicit ec: ExecutionContext) {
+    val dbConfig = dbConfigProvider.get[JdbcProfile]
 
     import dbConfig._
     import profile.api._
 
-    private class ReviewTable(tag: Tag) extends Table[Review](tag, "review") {
+    class ReviewTable(tag: Tag) extends Table[Review](tag, "review") {
 
         def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
         def product = column[Long]("product")
@@ -26,12 +28,12 @@ class ReviewRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         def * = (id, product, customer, content, score) <> ((Review.apply _).tupled, Review.unapply)
     }
 
-    import productRepository.ProductTable
     import customerRepository.CustomerTable
+    import productRepository.ProductTable
 
-    private val review = TableQuery[ReviewTable]
-    private val productValue = TableQuery[ProductTable]
-    private val customerValue = TableQuery[CustomerTable]
+    val review = TableQuery[ReviewTable]
+    val productValue = TableQuery[ProductTable]
+    val customerValue = TableQuery[CustomerTable]
 
     def create(product: Int, customer: Int, content: String, score: Float): Future[Review] = db.run {
         (review.map(r => (r.product, r.customer, r.content, r.score))

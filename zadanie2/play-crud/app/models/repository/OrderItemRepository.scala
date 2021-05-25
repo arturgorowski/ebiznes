@@ -1,15 +1,17 @@
-package models
+package models.repository
 
-import javax.inject.{Inject, Singleton}
+import models.OrderItem
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-import scala.concurrent.{Future, ExecutionContext}
+
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class OrderItemRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
-                                    orderRepository: OrderRepository,
-                                    productRepository: ProductRepository)(implicit ec: ExecutionContext) {
-    private val dbConfig = dbConfigProvider.get[JdbcProfile]
+                                    val orderRepository: OrderRepository,
+                                    val productRepository: ProductRepository)(implicit ec: ExecutionContext) {
+    val dbConfig = dbConfigProvider.get[JdbcProfile]
 
     import dbConfig._
     import profile.api._
@@ -32,9 +34,9 @@ class OrderItemRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
     import orderRepository.OrderTable
     import productRepository.ProductTable
 
-    private val orderItem = TableQuery[OrderItemTable]
-    private val orderVal = TableQuery[OrderTable]
-    private val productVal = TableQuery[ProductTable]
+    val orderItem = TableQuery[OrderItemTable]
+    val orderVal = TableQuery[OrderTable]
+    val productVal = TableQuery[ProductTable]
 
     def create(order: Long, product: Long): Future[OrderItem] = db.run {
         (orderItem.map(oi => (oi.order, oi.product))
