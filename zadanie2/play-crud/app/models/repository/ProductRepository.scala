@@ -9,7 +9,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ProductRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
-                                   val categoryRepository: CategoryRepository)(implicit ec: ExecutionContext) {
+                                   val categoryRepository: CategoryRepository)
+                                  (implicit ec: ExecutionContext) {
     val dbConfig = dbConfigProvider.get[JdbcProfile]
 
     import dbConfig._
@@ -18,10 +19,10 @@ class ProductRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
 
     class ProductTable(tag: Tag) extends Table[Product](tag, "product") {
 
-        def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+        def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
         def name = column[String]("name")
         def description = column[String]("description")
-        def price = column[Int]("price")
+        def price = column[Float]("price")
         def category = column[Int]("category")
         def category_fk = foreignKey("category_fk",category, cat)(_.id)
 
@@ -53,7 +54,7 @@ class ProductRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
      * This is an asynchronous operation, it will return a future of the created person, which can be used to obtain the
      * id for that person.
      */
-    def create(name: String, description: String, price: Int, category: Int): Future[Product] = db.run {
+    def create(name: String, description: String, price: Float, category: Int): Future[Product] = db.run {
         (product.map(p => (p.name, p.description, p.price, p.category))
             // Now define it to return the id, because we want to know what id was generated for the person
             returning product.map(_.id)
@@ -75,11 +76,11 @@ class ProductRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         product.filter(_.category === category_id).result
     }
 
-    def getById(id: Long): Future[Product] = db.run {
+    def getById(id: Int): Future[Product] = db.run {
         product.filter(_.id === id).result.head
     }
 
-    def getByIdOption(id: Long): Future[Option[Product]] = db.run {
+    def getByIdOption(id: Int): Future[Option[Product]] = db.run {
         product.filter(_.id === id).result.headOption
     }
 
@@ -87,9 +88,9 @@ class ProductRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         product.filter(_.category inSet category_ids).result
     }
 
-    def delete(id: Long): Future[Unit] = db.run(product.filter(_.id === id).delete).map(_ => ())
+    def delete(id: Int): Future[Unit] = db.run(product.filter(_.id === id).delete).map(_ => ())
 
-    def update(id: Long, new_product: Product): Future[Unit] = {
+    def update(id: Int, new_product: Product): Future[Unit] = {
         val productToUpdate: Product = new_product.copy(id)
         db.run(product.filter(_.id === id).update(productToUpdate)).map(_ => ())
     }

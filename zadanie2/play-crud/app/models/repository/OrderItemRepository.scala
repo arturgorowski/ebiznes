@@ -18,13 +18,13 @@ class OrderItemRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
 
     //    id: Long, order: Long, product: Long
     class OrderItemTable(tag: Tag) extends Table[OrderItem](tag, "order_item") {
-        def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+        def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
-        def order = column[Long]("order")
+        def order = column[Int]("order")
 
         def order_fk = foreignKey("order_fk", order, orderVal)(_.id)
 
-        def product = column[Long]("product")
+        def product = column[Int]("product")
 
         def product_fk = foreignKey("product_fk", product, productVal)(_.id)
 
@@ -38,7 +38,7 @@ class OrderItemRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
     val orderVal = TableQuery[OrderTable]
     val productVal = TableQuery[ProductTable]
 
-    def create(order: Long, product: Long): Future[OrderItem] = db.run {
+    def create(order: Int, product: Int): Future[OrderItem] = db.run {
         (orderItem.map(oi => (oi.order, oi.product))
             returning orderItem.map(_.id)
             into { case ((order, product), id) => OrderItem(id, order, product) }
@@ -49,11 +49,11 @@ class OrderItemRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
         orderItem.result
     }
 
-    def getByOrder(order_id: Long): Future[Seq[OrderItem]] = db.run {
+    def getByOrder(order_id: Int): Future[Seq[OrderItem]] = db.run {
         orderItem.filter(_.order === order_id).result
     }
 
-    def getByProduct(product_id: Long): Future[Seq[OrderItem]] = db.run {
+    def getByProduct(product_id: Int): Future[Seq[OrderItem]] = db.run {
         orderItem.filter(_.product === product_id).result
     }
 }

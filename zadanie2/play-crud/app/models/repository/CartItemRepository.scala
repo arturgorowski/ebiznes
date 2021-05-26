@@ -17,12 +17,12 @@ class CartItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
     import profile.api._
 
     private class CartItemTable(tag: Tag) extends Table[CartItem](tag, "cart_item") {
-        def id = column[Long]("id")
+        def id = column[Int]("id")
 
-        def cart = column[Long]("cart")
+        def cart = column[Int]("cart")
         def cart_fk = foreignKey("cart_fk", cart, cartVal)(_.id)
 
-        def product = column[Long]("product")
+        def product = column[Int]("product")
         def product_fk = foreignKey("product_fk", product, productVal)(_.id)
 
         def productQuantity = column[Int]("productQuantity")
@@ -37,7 +37,7 @@ class CartItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
     private val cartVal = TableQuery[CartTable]
     private val productVal = TableQuery[ProductTable]
 
-    def create(cart: Long, product: Long, productQuantity: Int): Future[CartItem] = db.run {
+    def create(cart: Int, product: Int, productQuantity: Int): Future[CartItem] = db.run {
         (cartItem.map(ci => (ci.cart, ci.product, ci.productQuantity))
             returning cartItem.map(_.id)
             into {case ((cart, product, productQuantity), id) => CartItem(id, cart, product, productQuantity)}

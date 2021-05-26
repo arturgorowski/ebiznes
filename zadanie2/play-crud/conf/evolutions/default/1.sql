@@ -56,7 +56,6 @@ CREATE TABLE "customer"
     "firstName" VARCHAR  NOT NULL,
     "lastName"  VARCHAR  NOT NULL,
     "password"  VARCHAR  NOT NULL,
-    "salt"      VARCHAR  NOT NULL,
     "createdAt" DATETIME NOT NULL,
     "address"   INTEGER  NOT NULL,
     FOREIGN KEY (address) references address (id)

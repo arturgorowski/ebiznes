@@ -17,7 +17,7 @@ class CustomerRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
 
     class CustomerTable(tag: Tag) extends Table[Customer](tag, "customer") {
 
-        def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+        def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
         def username = column[String]("username")
 
@@ -27,30 +27,47 @@ class CustomerRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
 
         def password = column[String]("password")
 
-        def salt = column[String]("salt")
-
         def createdAt = column[String]("createdAt")
 
         def address = column[Int]("address")
 
         def address_fk = foreignKey("address_fk", address, addressVal)(_.id)
 
-        def * = (id, username, firstName, lastName, password, salt, createdAt, address) <> ((Customer.apply _).tupled, Customer.unapply)
+        def * = (id, username, firstName, lastName, password, createdAt, address) <> ((Customer.apply _).tupled, Customer.unapply)
     }
 
     import addressRepository.AddressTable
     private val customer = TableQuery[CustomerTable]
     val addressVal = TableQuery[AddressTable]
 
-    def create(username: String, firstName: String, lastName: String, password: String, salt: String, createdAt: String, address: Int): Future[Customer] = db.run {
-        (customer.map(c => (c.username, c.firstName, c.lastName, c.password, c.salt, c.createdAt, c.address))
+    def create(username: String, firstName: String, lastName: String, password: String, createdAt: String, address: Int): Future[Customer] = db.run {
+        (customer.map(c => (c.username, c.firstName, c.lastName, c.password, c.createdAt, c.address))
             returning customer.map(_.id)
-            into {case((username, firstName, lastName, password, salt, createdAt, address), id) => Customer(id, username, firstName, lastName, password, salt, createdAt, address)}
-            ) += (username, firstName, lastName, password, salt, createdAt, address)
+            into {case((username, firstName, lastName, password, createdAt, address), id) => Customer(id, username, firstName, lastName, password, createdAt, address)}
+            ) += (username, firstName, lastName, password, createdAt, address)
     }
 
     def list(): Future[Seq[Customer]] = db.run {
         customer.result
+    }
+
+    def getById(id: Int): Future[Customer] = db.run {
+        customer.filter(_.id === id).result.head
+    }
+
+    def getByIdOption(id: Int): Future[Option[Customer]] = db.run {
+        customer.filter(_.id === id).result.headOption
+    }
+
+    def getByAddress(address_id: Int): Future[Customer] = db.run {
+        customer.filter(_.address === address_id).result.head
+    }
+
+    def delete(id: Int): Future[Unit] = db.run(customer.filter(_.id === id).delete).map(_ => ())
+
+    def update(id: Int, new_customer: Customer): Future[Unit] = {
+        val customerToUpdate: Customer = new_customer.copy(id)
+        db.run(customer.filter(_.id === id).update(customerToUpdate)).map(_ => ())
     }
 
 }

@@ -19,9 +19,9 @@ class ReviewRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
     class ReviewTable(tag: Tag) extends Table[Review](tag, "review") {
 
         def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-        def product = column[Long]("product")
+        def product = column[Int]("product")
         def product_fk = foreignKey("product_fk", product, productValue)(_.id)
-        def customer = column[Long]("customer")
+        def customer = column[Int]("customer")
         def customer_fk = foreignKey("customer_fk", customer, customerValue)(_.id)
         def content = column[String]("content")
         def score = column[Float]("score")
@@ -46,11 +46,11 @@ class ReviewRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         review.result
     }
 
-    def getByProduct(product_id: Long): Future[Seq[Review]] = db.run {
+    def getByProduct(product_id: Int): Future[Seq[Review]] = db.run {
         review.filter(_.product === product_id).result
     }
 
-    def getByCustomer(customer_id: Long): Future[Seq[Review]] = db.run {
+    def getByCustomer(customer_id: Int): Future[Seq[Review]] = db.run {
         review.filter(_.customer === customer_id).result
     }
 

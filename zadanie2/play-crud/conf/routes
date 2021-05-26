@@ -4,36 +4,69 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET        /                    controllers.HomeController.index()
+GET         /                          controllers.HomeController.index()
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file              controllers.Assets.versioned(path="/public", file: Asset)
 
 
 # Address
-#GET        /address/            controllers.AddressController.getAddresses()
-#GET        /address/:id         controllers.AddressController.getAddress(id: Long)
+GET         /addresses/form            controllers.AddressController.getAddressesForm()
+
+GET         /addresses                 controllers.AddressController.getAddresses()
+GET         /address/:id               controllers.AddressController.getAddress(id: Int)
+GET         /deleteaddress/:id         controllers.AddressController.delete(id: Int)
+POST        /addaddress                controllers.AddressController.addProduct()
 
 # Cart
+GET         /carts/form                controllers.CartController.getCartsForm()
+
+GET         /carts                     controllers.CartController.getCarts()
+GET         /cart/:id                  controllers.CartController.getCart(id: Int)
+GET         /deletecart/:id            controllers.CartController.delete(id: Int)
+POST        /addcart                   controllers.CartController.addCart()
+
+# CartItem
 
 
 # Category
+GET         /categories/form           controllers.CategoryController.getCategoriesForm()
 
+GET         /categories                controllers.CategoryController.getCategories()
+GET         /category/:id              controllers.CategoryController.getCategory(id: Int)
+GET         /deletecategory/:id        controllers.CategoryController.delete(id: Int)
+POST        /addcategory               controllers.CategoryController.addCategory()
 
 # Coupon
+GET         /coupons/form              controllers.CouponController.getCouponsForm()
 
+GET         /coupons                   controllers.CouponController.getCoupons()
+GET         /coupon/:id                controllers.CouponController.getCoupon(id: Int)
+GET         /deletecoupon/:id          controllers.CouponController.delete(id: Int)
+POST        /addcoupon                 controllers.CouponController.addCoupon()
 
 # Customer
+GET         /customers/form            controllers.CustomerController.getCustomersForm()
+
+GET         /customers                 controllers.CustomerController.getCustomers()
+GET         /customer/:id              controllers.CustomerController.getCustomer(id: Int)
+GET         /deletecustomer/:id        controllers.CustomerController.delete(id: Int)
+POST        /addcustomer               controllers.CustomerController.addCoupon()
 
 
 # Order
 
 
+# OrderItem
+
+
 # Product
+GET         /product/form              controllers.ProductController.getProductsForm()
+
+GET         /products                  controllers.ProductController.getProducts()
+GET         /product/:id               controllers.ProductController.getProduct(id: Int)
+GET         /deleteproduct/:id         controllers.ProductController.delete(id: Int)
+POST        /addproduct                controllers.ProductController.addProduct()
 
 
 # Review
-
-
-# Address
-# Address

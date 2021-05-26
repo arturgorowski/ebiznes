@@ -1,0 +1,7 @@
+@(categories: Seq[Category])
+
+@for(category <- categories) {
+    <div style="padding-bottom: 10px">
+        @category.id. @category.name
+    </div>
+}

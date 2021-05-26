@@ -1,0 +1,8 @@
+@(coupons: Seq[Coupon])
+
+@for(coupon <- coupons) {
+    <div style="padding-bottom: 10px">
+        @coupon.id. @coupon.code, @coupon.couponType, @coupon.discount, @coupon.isActive,
+        @coupon.createdAt, @coupon.usedAt
+    </div>
+}
