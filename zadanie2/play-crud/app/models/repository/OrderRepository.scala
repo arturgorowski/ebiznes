@@ -23,7 +23,7 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
         def customer_fk = foreignKey("customer_fk", customer, customerVal)(_.id)
         def isPaid = column[Boolean]("isPaid")
         def paidAt = column[String]("paidAt")
-        def totalOrderValue = column[Int]("totalOrderValue")
+        def totalOrderValue = column[Float]("totalOrderValue")
         def coupon = column[Int]("coupon")
         def coupon_fk = foreignKey("coupon_fk", coupon, couponVal)(_.id)
 
@@ -37,7 +37,7 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
     val customerVal = TableQuery[CustomerTable]
     val couponVal = TableQuery[CouponTable]
 
-    def create(createdAt: String, customer: Int, isPaid: Boolean, paidAt: String, totalOrderValue: Int, coupon: Int): Future[Order] = db.run {
+    def create(createdAt: String, customer: Int, isPaid: Boolean, paidAt: String, totalOrderValue: Float, coupon: Int): Future[Order] = db.run {
         (order.map(o => (o.createdAt, o.customer, o.isPaid, o.paidAt, o.totalOrderValue, o.coupon))
             returning order.map(_.id)
             into {case((createdAt, customer, isPaid, paidAt, totalOrderValue, coupon), id) => Order(id, createdAt, customer, isPaid, paidAt, totalOrderValue, coupon)}
@@ -52,8 +52,19 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
         order.filter(_.id === id).result.head
     }
 
-    def getByCustomer(customer_id: Int): Future[Seq[Order]] = db.run {
-        order.filter(_.customer === customer_id).result
+    def getByIdOption(id: Int): Future[Option[Order]] = db.run {
+        order.filter(_.id === id).result.headOption
+    }
+
+    def getByCustomer(customer_id: Int): Future[Option[Order]] = db.run {
+        order.filter(_.customer === customer_id).result.headOption
+    }
+
+    def delete(id: Int): Future[Unit] = db.run(order.filter(_.id === id).delete).map(_ => ())
+
+    def update(id: Int, new_order: Order): Future[Unit] = {
+        val orderToUpdate: Order = new_order.copy(id)
+        db.run(order.filter(_.id === id).update(orderToUpdate)).map(_ => ())
     }
 
 }

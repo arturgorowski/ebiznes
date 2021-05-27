@@ -1,6 +1,6 @@
 package models.repository
 
-import models.CartItem
+import models.{CartItem, Product}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
@@ -46,5 +46,24 @@ class CartItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
 
     def list(): Future[Seq[CartItem]] = db.run {
         cartItem.result
+    }
+
+    def getByCart(cart_id: Int): Future[Seq[CartItem]] = db.run {
+        cartItem.filter(_.cart === cart_id).result
+    }
+
+    def getById(id: Int): Future[CartItem] = db.run {
+        cartItem.filter(_.id === id).result.head
+    }
+
+    def getByIdOption(id: Int): Future[Option[CartItem]] = db.run {
+        cartItem.filter(_.id === id).result.headOption
+    }
+
+    def delete(id: Int): Future[Unit] = db.run(cartItem.filter(_.id === id).delete).map(_ => ())
+
+    def update(id: Int, new_cartItem: CartItem): Future[Unit] = {
+        val cartItemToUpdate: CartItem = new_cartItem.copy(id)
+        db.run(cartItem.filter(_.id === id).update(cartItemToUpdate)).map(_ => ())
     }
 }

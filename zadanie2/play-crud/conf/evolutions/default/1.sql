@@ -68,7 +68,7 @@ CREATE TABLE "order"
     "customer"        INTEGER  NOT NULL,
     "isPaid"          INTEGER  NOT NULL,
     "paidAt"          VARCHAR  NOT NULL,
-    "totalOrderValue" INTEGER  NOT NULL,
+    "totalOrderValue" DECIMAL  NOT NULL,
     "coupon"          INTEGER  NOT NULL,
     FOREIGN KEY (customer) references customer (id),
     FOREIGN KEY (coupon) references coupon (id)

@@ -59,8 +59,8 @@ class CartRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         cart.filter(_.id === id).result.headOption
     }
 
-    def getByCustomer(customer_id: Int): Future[Seq[Cart]] = db.run {
-        cart.filter(_.customer === customer_id).result
+    def getByCustomer(customer_id: Int): Future[Option[Cart]] = db.run {
+        cart.filter(_.customer === customer_id).result.headOption
     }
 
     def getByCustomers(customer_ids: List[Int]): Future[Seq[Cart]] = db.run {

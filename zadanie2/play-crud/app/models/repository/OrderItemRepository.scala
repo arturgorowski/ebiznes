@@ -49,11 +49,26 @@ class OrderItemRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
         orderItem.result
     }
 
+    def getById(id: Int): Future[OrderItem] = db.run {
+        orderItem.filter(_.id === id).result.head
+    }
+
     def getByOrder(order_id: Int): Future[Seq[OrderItem]] = db.run {
         orderItem.filter(_.order === order_id).result
     }
 
     def getByProduct(product_id: Int): Future[Seq[OrderItem]] = db.run {
         orderItem.filter(_.product === product_id).result
+    }
+
+    def getByIdOption(id: Int): Future[Option[OrderItem]] = db.run {
+        orderItem.filter(_.id === id).result.headOption
+    }
+
+    def delete(id: Int): Future[Unit] = db.run(orderItem.filter(_.id === id).delete).map(_ => ())
+
+    def update(id: Int, new_orderItem: OrderItem): Future[Unit] = {
+        val orderItemToUpdate: OrderItem = new_orderItem.copy(id)
+        db.run(orderItem.filter(_.id === id).update(orderItemToUpdate)).map(_ => ())
     }
 }

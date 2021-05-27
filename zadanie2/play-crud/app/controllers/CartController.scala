@@ -40,10 +40,17 @@ class CartController @Inject()(cartRepository: CartRepository,
         }
     }
 
+    def getCustomerCart(customer_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+        cartRepository.getByCustomer(customer_id: Int).map {
+            case Some(cart) => Ok(Json.toJson(cart)).as("application/json")
+            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
+        }
+    }
+
     def getCart(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         cartRepository.getByIdOption(id: Int).map {
             case Some(carts) => Ok(Json.toJson(carts))
-            case None => Redirect(routes.CartController.getCarts())
+            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
         }
     }
 
@@ -56,7 +63,7 @@ class CartController @Inject()(cartRepository: CartRepository,
         val cart_json = request.body.asJson.get
         val cart = cart_json.as[Cart]
         cartRepository.create(cart.customer, cart.productsQuantity, cart.totalProductsPrice, cart.coupon, cart.createdAt)
-        Redirect("/carts")
+        Redirect("/cart/" + cart.customer)
     }
 }
 

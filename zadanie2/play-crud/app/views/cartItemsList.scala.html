@@ -1,0 +1,7 @@
+@(cartItems: Seq[CartItem])
+
+@for(cartItem <- cartItems) {
+    <div style="padding-bottom: 10px">
+        @cartItem.id. @cartItem.cart, @cartItem.product, @cartItem.productQuantity
+    </div>
+}

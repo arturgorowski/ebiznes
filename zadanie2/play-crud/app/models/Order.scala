@@ -7,7 +7,7 @@ case class Order(id: Int,
                  customer: Int,
                  isPaid: Boolean,
                  paidAt: String,
-                 totalOrderValue: Int,
+                 totalOrderValue: Float,
                  coupon: Int
                 )
 

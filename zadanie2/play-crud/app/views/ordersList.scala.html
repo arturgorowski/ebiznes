@@ -1,0 +1,7 @@
+@(orders: Seq[Order])
+
+@for(order <- orders) {
+    <div style="padding-bottom: 10px">
+        @order.id. @order.createdAt, @order.customer, @order.isPaid, @order.paidAt, @order.totalOrderValue, @order.coupon
+    </div>
+}
