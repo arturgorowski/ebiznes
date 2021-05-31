@@ -1,0 +1,41 @@
+@import "~node_modules/reflex-grid/scss/includes/variables";
+
+$reflex-prefix: l- !default;
+
+.#{$reflex-prefix}container {
+    min-width: 360px !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+
+    & > .#{$reflex-prefix}grid {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    @media (min-width: $reflex-xs) {
+        max-width: $reflex-sm !important;
+        padding-right: ($reflex-grid-spacing * 2) !important;
+        padding-left: ($reflex-grid-spacing * 2) !important;
+
+        .#{$reflex-prefix}grid {
+            margin-right: -$reflex-grid-spacing !important;
+            margin-left: -$reflex-grid-spacing !important;
+        }
+    }
+
+    @media (min-width: $reflex-sm) {
+        max-width: $reflex-md !important;
+    }
+
+    @media (min-width: $reflex-md) {
+        max-width: $reflex-lg !important;
+    }
+
+    @media (min-width: $reflex-lg) {
+        max-width: $reflex-xlg !important;
+    }
+
+    @media (min-width: $reflex-xlg) {
+        max-width: $reflex-xlg !important;
+    }
+}

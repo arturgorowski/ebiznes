@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "main.scss";
+@import "./reflex-grid-settings";
+@import "~node_modules/reflex-grid/scss/reflex.scss";
 
 html, body {
   height: 100%;

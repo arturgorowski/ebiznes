@@ -49,6 +49,13 @@
             "styles": [
               "src/styles/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles/settings",
+                "src/styles/tools",
+                "./node_modules/reflex-grid/scss/includes"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
@@ -113,6 +120,13 @@
             "styles": [
               "src/styles/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles/settings",
+                "src/styles/tools",
+                "./node_modules/reflex-grid/scss/includes"
+              ]
+            },
             "scripts": []
           }
         },
