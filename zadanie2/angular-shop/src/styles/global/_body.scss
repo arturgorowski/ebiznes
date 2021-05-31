@@ -1,0 +1,10 @@
+body {
+  font-family: $font-primary;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-base;
+  color: $cp-dark-gray;
+}
+
+a,button:after{
+  line-height: 1;
+}
