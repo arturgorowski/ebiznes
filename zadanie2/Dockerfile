@@ -13,9 +13,10 @@ RUN apt-get update &&\
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get install -y nodejs
 RUN npm install -g npm@latest
+RUN npm install -g @angular/cli
 
 EXPOSE 8080
-EXPOSE 5000
+EXPOSE 4200
 EXPOSE 9000
 
 
