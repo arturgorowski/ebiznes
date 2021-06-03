@@ -54,10 +54,16 @@ class ReviewController @Inject()(reviewRepository: ReviewRepository,
         }
     }
 
+//    def getProductReviews(product_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+//        reviewRepository.getByProduct(product_id: Int).map {
+//            case Some(reviews) => Ok(Json.toJson(reviews)).as("application/json")
+//            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
+//        }
+//    }
+
     def getProductReviews(product_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         reviewRepository.getByProduct(product_id: Int).map {
-            case Some(reviews) => Ok(Json.toJson(reviews)).as("application/json")
-            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
+            reviews => Ok(Json.toJson(reviews)).as("application/json")
         }
     }
 
@@ -66,7 +72,7 @@ class ReviewController @Inject()(reviewRepository: ReviewRepository,
         Redirect("/reviews")
     }
 
-    def addCart(): Action[AnyContent] = Action { implicit request =>
+    def addReview(): Action[AnyContent] = Action { implicit request =>
         val review_json = request.body.asJson.get
         val review = review_json.as[Review]
         reviewRepository.create(review.product, review.customer, review.content, review.score)

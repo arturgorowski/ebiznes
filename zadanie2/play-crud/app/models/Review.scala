@@ -10,5 +10,6 @@ case class Review(id: Int,
                  )
 
 object Review {
+    implicit val customerFormat: OFormat[Customer] = Json.format[Customer]
     implicit val reviewFormat: OFormat[Review] = Json.format[Review]
 }

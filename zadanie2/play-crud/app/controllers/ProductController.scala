@@ -38,6 +38,19 @@ class ProductController @Inject()(productRepository: ProductRepository,
         }
     }
 
+//    def getProductByCategory(category_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+//        productRepository.getByCategoryOption(category_id: Int).map {
+//            case Some(reviews) => Ok(Json.toJson(reviews)).as("application/json")
+//            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
+//        }
+//    }
+
+    def getProductByCategory(category_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+        productRepository.getByCategory(category_id: Int).map {
+            reviews => Ok(Json.toJson(reviews)).as("application/json")
+        }
+    }
+
     def getProduct(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         productRepository.getByIdOption(id: Int).map {
             case Some(products) => Ok(Json.toJson(products))

@@ -57,7 +57,7 @@ GET         /customers/form                              controllers.CustomerCon
 GET         /customers                                   controllers.CustomerController.getCustomers()
 GET         /customer/:id                                controllers.CustomerController.getCustomer(id: Int)
 GET         /deletecustomer/:id                          controllers.CustomerController.delete(id: Int)
-POST        /addcustomer                                 controllers.CustomerController.addCoupon()
+POST        /addcustomer                                 controllers.CustomerController.addCustomer()
 
 # Order
 GET         /orders/form                                 controllers.OrderController.getOrdersForm()
@@ -80,6 +80,7 @@ POST        /addorderItem                                controllers.OrderItemCo
 GET         /products/form                               controllers.ProductController.getProductsForm()
 
 GET         /products                                    controllers.ProductController.getProducts()
+GET         /products/category/:category_id              controllers.ProductController.getProductByCategory(category_id: Int)
 GET         /product/:id                                 controllers.ProductController.getProduct(id: Int)
 GET         /deleteproduct/:id                           controllers.ProductController.delete(id: Int)
 POST        /addproduct                                  controllers.ProductController.addProduct()
@@ -92,4 +93,4 @@ GET         /review/:id                                  controllers.ReviewContr
 GET         /customerreviews/:customer_id                controllers.ReviewController.getCustomerReviews(customer_id: Int)
 GET         /productreviews/:product_id                  controllers.ReviewController.getProductReviews(product_id: Int)
 GET         /deletereview/:id                            controllers.ReviewController.delete(id: Int)
-POST        /addreview                                   controllers.ReviewController.addCart()
+POST        /addreview                                   controllers.ReviewController.addReview()
