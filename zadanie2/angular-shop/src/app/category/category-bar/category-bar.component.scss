@@ -1,0 +1,30 @@
+@import "fonts";
+@import "./colors";
+
+.category-bar {
+    display: flex;
+    padding: 25px 0 0;
+
+    & .category {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 10px;
+        font-size: $font-size-15;
+        line-height: 20px;
+        background-color: $cp-light-gray;
+        color: $cp-independence;
+        border-radius: 25px;
+        cursor: pointer;
+        margin-right: 10px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:hover, &.active {
+            background-color: $cp-space-cadet;
+            color: $cp-light-gray;
+        }
+    }
+}

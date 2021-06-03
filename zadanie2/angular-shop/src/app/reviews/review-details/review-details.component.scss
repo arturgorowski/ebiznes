@@ -1,0 +1,17 @@
+@import "fonts";
+
+.review {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
+
+    &-score {
+        font-size: $font-size-18;
+        font-weight: $font-weight-bold;
+        padding-bottom: 5px;
+    }
+
+    &-content {
+        font-size: $font-size-15;
+    }
+}

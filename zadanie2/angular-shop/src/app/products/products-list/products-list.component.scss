@@ -1,0 +1,63 @@
+@import "fonts";
+@import "settings";
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+
+    & .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex: 1;
+
+        &-text {
+            font-size: $font-size-24;
+            font-weight: $font-weight-bold;
+            padding: 25px 0 20px;
+        }
+    }
+
+    & .body {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-column-gap: 30px;
+        grid-row-gap: 30px;
+        margin-top: 50px;
+
+        & .product-box {
+            display: flex;
+            flex-direction: column;
+            border: 2px solid $cp-turquoise-blue;
+            padding: 15px;
+            cursor: pointer;
+
+            &:hover {
+                border: 2px solid $cp-space-cadet;
+            }
+
+            & .heading {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 30px;
+
+                &-text {
+                    font-weight: $font-weight-semibold;
+                    font-size: $font-size-15;
+                    line-height: 20px;
+                }
+
+                &-price {
+                    font-size: $font-size-13;
+                    line-height: 20px;
+                }
+            }
+
+            & .button {
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+    }
+}

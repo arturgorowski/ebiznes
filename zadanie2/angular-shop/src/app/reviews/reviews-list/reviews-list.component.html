@@ -1,0 +1,14 @@
+<div class="l-container">
+    <div class="l-grid">
+        <div class="l-col-12">
+
+            <div class="review-list">
+                <div class="header">Recenzje w sklepie:</div>
+                <div class="body">
+                    <app-review-details *ngFor="let review of reviews" [review]="review"></app-review-details>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

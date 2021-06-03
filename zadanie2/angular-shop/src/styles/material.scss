@@ -1,0 +1,94 @@
+@import "./colors";
+
+.mat-form-field {
+    width: 100%;
+}
+
+.mat-form-field-label-wrapper {
+    overflow: unset !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: $cp-white;
+    border-radius: 6px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
+    top: .45em !important;
+}
+
+/* brak paddingu dla inputow bez walidacji z komunikatami */
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 1em 0 .75em 0;
+}
+
+.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    transform: translateY(-1.4em) scale(.75);
+  }
+
+.mat-wrapper-no-padding {
+    & .mat-form-field-wrapper {
+        padding-bottom: 0
+    }
+}
+
+.no-label-input {
+    & .mat-form-field-wrapper {
+        padding-bottom: 0;
+    }
+
+    &.mat-form-field-appearance-outline .mat-form-field-infix {
+        padding: .3em 0 .7em 0;
+    }
+}
+
+//.mat-input-background-grey {
+//    &.mat-form-field-appearance-outline .mat-form-field-outline {
+//        background-color: $cp-primary-pale-grey-two;
+//    }
+//}
+//
+//.mat-input-background-pale-grey {
+//    &.mat-form-field-appearance-outline .mat-form-field-outline {
+//        background-color: $cp-primary-pale-grey-two;
+//    }
+//}
+
+.mat-custom-label-transform {
+    //&.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    //    //transform: translateY(-1.59375em) scale(.75);
+    //    transform: translateY(-1.19375em) scale(.75);
+    //}
+
+    &.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-outline-gap {
+        border-top-color: inherit;
+    }
+}
+
+/************* MAT CHECKBOX **********/
+
+.mat-checkbox-custom--large {
+    &.mat-checkbox {
+        & .mat-checkbox-inner-container {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
+
+
+/************* MAT PREFIX **********/
+.mat-form-field-appearance-outline .mat-form-field-prefix {
+    top: 0 !important;
+    padding-right: 10px;
+}
+
+.dialog-container-no-padding .mat-dialog-container {
+    padding: 0;
+}
+
+.mat-dialog-no-padding {
+    & .mat-dialog-container {
+        padding: 0;
+    }
+}
