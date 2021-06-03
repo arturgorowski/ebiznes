@@ -57,7 +57,7 @@ class CartItemController @Inject()(cartItemRepository: CartItemRepository,
         val cartItems_json = request.body.asJson.get
         val cartItem = cartItems_json.as[CartItem]
         cartItemRepository.create(cartItem.cart, cartItem.product, cartItem.productQuantity)
-        Redirect("/cartItems")
+        Redirect("/cartitems/" + cartItem.cart)
     }
 }
 

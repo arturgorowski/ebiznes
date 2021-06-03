@@ -41,10 +41,16 @@ class OrderController @Inject()(orderRepository: OrderRepository,
         }
     }
 
+//    def getCustomerOrder(customer_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+//        orderRepository.getByCustomer(customer_id: Int).map {
+//            case Some(orders) => Ok(Json.toJson(orders)).as("application/json")
+//            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
+//        }
+//    }
+
     def getCustomerOrder(customer_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         orderRepository.getByCustomer(customer_id: Int).map {
-            case Some(orders) => Ok(Json.toJson(orders)).as("application/json")
-            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
+            orders => Ok(Json.toJson(orders)).as("application/json")
         }
     }
 
@@ -64,7 +70,7 @@ class OrderController @Inject()(orderRepository: OrderRepository,
         val order_json = request.body.asJson.get
         val order = order_json.as[Order]
         orderRepository.create(order.createdAt, order.customer, order.isPaid, order.paidAt, order.totalOrderValue, order.coupon)
-        Redirect("/carts" + order.customer)
+        Redirect("/customerorder/" + order.customer)
     }
 }
 

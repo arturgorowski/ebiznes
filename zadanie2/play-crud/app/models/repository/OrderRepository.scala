@@ -56,8 +56,8 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
         order.filter(_.id === id).result.headOption
     }
 
-    def getByCustomer(customer_id: Int): Future[Option[Order]] = db.run {
-        order.filter(_.customer === customer_id).result.headOption
+    def getByCustomer(customer_id: Int): Future[Seq[Order]] = db.run {
+        order.filter(_.customer === customer_id).result
     }
 
     def delete(id: Int): Future[Unit] = db.run(order.filter(_.id === id).delete).map(_ => ())
