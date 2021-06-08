@@ -17,20 +17,17 @@ class CartRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
     import profile.api._
 
     class CartTable(tag: Tag) extends Table[Cart](tag, "cart") {
-        def id = column[Int]("id")
+        def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
         def customer = column[Int]("customer")
         def customer_fk = foreignKey("customer_fk", customer, customerVal)(_.id)
 
-        def productsQuantity = column[Int]("productsQuantity")
-        def totalProductsPrice = column[BigDecimal]("totalProductsPrice")
+        def totalProductsPrice = column[Float]("totalProductsPrice")
 
         def coupon = column[Int]("coupon")
         def coupon_fk = foreignKey("coupon_fk", coupon, couponVal)(_.id)
 
-        def createdAt = column[String]("createdAt")
-
-        def * = (id, customer, productsQuantity, totalProductsPrice, coupon, createdAt) <> ((Cart.apply _).tupled, Cart.unapply)
+        def * = (id, customer, totalProductsPrice, coupon) <> ((Cart.apply _).tupled, Cart.unapply)
     }
 
     import couponRepository.CouponTable
@@ -40,11 +37,11 @@ class CartRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
     private val customerVal = TableQuery[CustomerTable]
     private val couponVal = TableQuery[CouponTable]
 
-    def create(customer: Int, productsQuantity: Int, totalProductsPrice: BigDecimal, coupon: Int, createdAt: String): Future[Cart] = db.run {
-        (cart.map(c => (c.customer, c.productsQuantity, c.totalProductsPrice, c.coupon, c.createdAt))
+    def create(customer: Int, totalProductsPrice: Float, coupon: Int): Future[Cart] = db.run {
+        (cart.map(c => (c.customer, c.totalProductsPrice, c.coupon))
             returning cart.map(_.id)
-            into {case ((customer, productsQuantity, totalProductsPrice, coupon, createdAt), id) => Cart(id, customer, productsQuantity, totalProductsPrice, coupon, createdAt)}
-        ) += (customer, productsQuantity, totalProductsPrice, coupon, createdAt)
+            into {case ((customer, totalProductsPrice, coupon), id) => Cart(id, customer, totalProductsPrice, coupon)}
+        ) += (customer, totalProductsPrice, coupon)
     }
 
     def list(): Future[Seq[Cart]] = db.run {

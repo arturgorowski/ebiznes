@@ -4,7 +4,7 @@ import models.Coupon
 import models.repository.CouponRepository
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.data.format.Formats.{bigDecimalFormat, longFormat}
+import play.api.data.format.Formats.{floatFormat, longFormat}
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -22,7 +22,7 @@ class CouponController @Inject()(couponRepository: CouponRepository,
         mapping(
             "code" -> of[Long],
             "couponType" -> nonEmptyText,
-            "discount" -> of[BigDecimal],
+            "discount" -> of[Float],
             "isActive" -> boolean,
             "createdAt" -> nonEmptyText,
             "usedAt" -> nonEmptyText
@@ -62,4 +62,4 @@ class CouponController @Inject()(couponRepository: CouponRepository,
     }
 }
 
-case class CreateCouponForm(code: Long, couponType: String, discount: BigDecimal, isActive: Boolean, createdAt: String, usedAt: String)
+case class CreateCouponForm(code: Long, couponType: String, discount: Float, isActive: Boolean, createdAt: String, usedAt: String)

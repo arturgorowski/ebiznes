@@ -17,7 +17,7 @@ class CartItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
     import profile.api._
 
     private class CartItemTable(tag: Tag) extends Table[CartItem](tag, "cart_item") {
-        def id = column[Int]("id")
+        def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
         def cart = column[Int]("cart")
         def cart_fk = foreignKey("cart_fk", cart, cartVal)(_.id)

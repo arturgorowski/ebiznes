@@ -11,5 +11,4 @@ case class Product(id: Int,
 
 object Product {
     implicit val productFormat: OFormat[Product] = Json.format[Product]
-
 }

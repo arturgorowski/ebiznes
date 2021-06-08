@@ -1,10 +1,8 @@
 export interface Cart {
     id: number;
     customer: number;
-    productsQuantity: number;
     totalProductsPrice: number;
     coupon: number;
-    createdAt: string;
 }
 
 export interface CartItem {

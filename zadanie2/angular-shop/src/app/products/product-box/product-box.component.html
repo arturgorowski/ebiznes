@@ -1,1 +1,9 @@
-<p>product-box works!</p>
+<div class="product-box" [routerLink]="['/products/', product.id]">
+    <div class="heading">
+        <div class="heading-text">{{product.name}}</div>
+        <div class="heading-price">{{product.price}} zł</div>
+    </div>
+    <div class="button">
+        <div class="c-btn__standard c-btn__standard--orange-red">Zobacz produkt</div>
+    </div>
+</div>

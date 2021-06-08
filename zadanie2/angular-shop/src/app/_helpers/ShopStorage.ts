@@ -44,7 +44,7 @@ export class ShopStorage {
         });
     }
 
-    static setCart(cart: string) {
+    static setCart(cart: number) {
         this.addItemToShop(KEY_CART, cart);
     }
 

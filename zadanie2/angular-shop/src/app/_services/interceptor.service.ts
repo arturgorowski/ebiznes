@@ -13,19 +13,22 @@ export class Interceptor implements HttpInterceptor {
     constructor(protected router: Router) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        // if (request.url.includes(environment.apiHost)) {
-        //     request = request.clone({
-        //         url: request.url,
-        //         setHeaders: {
-        //             // 'Token': token,
-        //             'Access-Control-Allow-Origin': '*',
-        //         },
-        //         withCredentials: true
-        //     });
-        // }
+        if (request.url.includes(environment.apiHost)) {
+            request = request.clone({
+                url: request.url,
+                setHeaders: {
+                    // 'Token': token,
+                    'Access-Control-Allow-Origin': '*',
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                withCredentials: true
+            });
+        }
 
         return next.handle(request).pipe(tap((event: HttpEvent<any>) => {
             if (event instanceof HttpResponse) {
+                console.log('[EVENT]', event);
             }
         }, (error: any) => {
             if (error instanceof HttpErrorResponse && request.url.includes(environment.apiHost)) {
@@ -35,7 +38,7 @@ export class Interceptor implements HttpInterceptor {
     }
 
     handleErrors(error) {
-
+        console.log('[ERROR]', error);
     }
 }
 

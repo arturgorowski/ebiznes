@@ -4,10 +4,8 @@ import play.api.libs.json.{Json, OFormat}
 
 case class Cart(id: Int,
                 customer: Int,
-                productsQuantity: Int,
-                totalProductsPrice: BigDecimal,
-                coupon: Int,
-                createdAt: String
+                totalProductsPrice: Float,
+                coupon: Int
                )
 
 object Cart {

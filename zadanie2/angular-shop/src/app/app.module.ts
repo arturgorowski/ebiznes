@@ -54,7 +54,7 @@ import {CartResolveService} from './cart/service/cart-resolve.service';
         FormsModule
     ],
     providers: [
-        {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true},
+        // {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true},
         ProductRepositoryService,
         ProductResolveService,
         CategoryRepositoryService,

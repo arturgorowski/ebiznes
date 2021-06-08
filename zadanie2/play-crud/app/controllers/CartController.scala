@@ -5,7 +5,7 @@ import models.Cart
 import models.repository.CartRepository
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.data.format.Formats.bigDecimalFormat
+import play.api.data.format.Formats.floatFormat
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -20,10 +20,8 @@ class CartController @Inject()(cartRepository: CartRepository,
     val cartForm: Form[CreateCartForm] = Form {
         mapping(
             "customer" -> number,
-            "productsQuantity" -> number,
-            "totalProductsPrice" -> of[BigDecimal],
+            "totalProductsPrice" -> of[Float],
             "coupon" -> number,
-            "createdAt" -> nonEmptyText
         )(CreateCartForm.apply)(CreateCartForm.unapply)
     }
 
@@ -47,10 +45,16 @@ class CartController @Inject()(cartRepository: CartRepository,
         }
     }
 
+//    def getCart(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+//        cartRepository.getByIdOption(id: Int).map {
+//            case Some(carts) => Ok(Json.toJson(carts))
+//            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
+//        }
+//    }
+
     def getCart(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-        cartRepository.getByIdOption(id: Int).map {
-            case Some(carts) => Ok(Json.toJson(carts))
-            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
+        cartRepository.getById(id: Int).map {
+            carts => Ok(Json.toJson(carts)).as("application/json")
         }
     }
 
@@ -62,9 +66,9 @@ class CartController @Inject()(cartRepository: CartRepository,
     def addCart(): Action[AnyContent] = Action { implicit request =>
         val cart_json = request.body.asJson.get
         val cart = cart_json.as[Cart]
-        cartRepository.create(cart.customer, cart.productsQuantity, cart.totalProductsPrice, cart.coupon, cart.createdAt)
-        Redirect("/cart/" + cart.customer)
+        cartRepository.create(cart.customer, cart.totalProductsPrice, cart.coupon)
+        Redirect("/carts")
     }
 }
 
-case class CreateCartForm(customer: Int, productsQuantity: Int, totalProductsPrice: BigDecimal, coupon: Int, createdAt: String)
+case class CreateCartForm(customer: Int, totalProductsPrice: Float, coupon: Int)

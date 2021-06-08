@@ -25,39 +25,5 @@
         grid-row-gap: 30px;
         margin-top: 50px;
 
-        & .product-box {
-            display: flex;
-            flex-direction: column;
-            border: 2px solid $cp-turquoise-blue;
-            padding: 15px;
-            cursor: pointer;
-
-            &:hover {
-                border: 2px solid $cp-space-cadet;
-            }
-
-            & .heading {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding-bottom: 30px;
-
-                &-text {
-                    font-weight: $font-weight-semibold;
-                    font-size: $font-size-15;
-                    line-height: 20px;
-                }
-
-                &-price {
-                    font-size: $font-size-13;
-                    line-height: 20px;
-                }
-            }
-
-            & .button {
-                display: flex;
-                justify-content: flex-end;
-            }
-        }
     }
 }

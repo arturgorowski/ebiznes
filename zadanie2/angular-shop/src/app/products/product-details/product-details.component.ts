@@ -5,7 +5,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Review} from '../../_models/Review';
 import {ShopStorage} from '../../_helpers/ShopStorage';
 import {CartRepositoryService} from '../../cart/service/cart-repository.service';
-import {CartItem} from '../../_models/Cart';
+import {Cart, CartItem} from '../../_models/Cart';
+import {mergeMap, switchMap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-product-details',
@@ -40,14 +41,25 @@ export class ProductDetailsComponent implements OnInit {
 
     addItemToCart() {
         const cartId = ShopStorage.getCart();
-        if (cartId) {
-            const cartItem: CartItem = {id: 0, cart: cartId, product: this.product.id, productQuantity: 1};
-            this.cartRepository.addCartItem(cartItem).subscribe((cartItems: CartItem[]) => {
-                this.router.navigate(['/cart']);
-            });
+        console.log(cartId);
+        if (!cartId) {
+            const newCart: Cart = {id: 0, customer: 1, totalProductsPrice: 1, coupon: 1};
+            this.cartRepository.addCart(newCart)
+                .pipe(mergeMap((cart: Cart) => {
+                    ShopStorage.setCart(cart.id);
+                    return this.addItemCart(cart.id);
+                }))
+                .subscribe();
         } else {
-
+            this.addItemCart(cartId).subscribe((cart: Cart) => {
+                console.log(cart);
+            });
         }
-        console.log('add item to cart');
+    }
+
+    addItemCart(cartId: number) {
+        console.log('dodaj produkt xd');
+        const cartItem: CartItem = {id: 0, cart: cartId, product: this.product.id, productQuantity: 1};
+        return this.cartRepository.addCartItem(cartItem);
     }
 }

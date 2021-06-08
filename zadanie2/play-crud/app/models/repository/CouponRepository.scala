@@ -19,17 +19,17 @@ class CouponRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)
         def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
         def code = column[Long]("code")
         def couponType = column[String]("couponType")
-        def discount = column[BigDecimal]("discount")
+        def discount = column[Float]("discount")
         def isActive = column[Boolean]("isActive")
         def createdAt = column[String]("createdAt")
-        def usedAt = column[String]("createdAt")
+        def usedAt = column[String]("usedAt")
 
         def * = (id, code, couponType, discount, isActive, createdAt, usedAt) <> ((Coupon.apply _).tupled, Coupon.unapply)
     }
 
     val coupon = TableQuery[CouponTable]
 
-    def create(code: Long, couponType: String, discount: BigDecimal, isActive: Boolean, createdAt: String, usedAt: String): Future[Coupon] = db.run {
+    def create(code: Long, couponType: String, discount: Float, isActive: Boolean, createdAt: String, usedAt: String): Future[Coupon] = db.run {
         (coupon.map(c => (c.code, c.couponType, c.discount, c.isActive, c.createdAt, c.usedAt))
             returning coupon.map(_.id)
             into {case ((code, couponType, discount, isActive, createdAt, usedAt), id) => Coupon(id, code, couponType, discount, isActive, createdAt, usedAt)}

@@ -5,7 +5,7 @@ import play.api.libs.json.{Json, OFormat}
 case class Coupon(id: Int,
                   code: Long,
                   couponType: String,
-                  discount: BigDecimal,
+                  discount: Float,
                   isActive: Boolean,
                   createdAt: String,
                   usedAt: String

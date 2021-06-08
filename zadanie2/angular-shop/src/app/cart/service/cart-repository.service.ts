@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ShopStorage} from '../../_helpers/ShopStorage';
 import {EMPTY} from 'rxjs';
@@ -30,13 +30,21 @@ export class CartRepositoryService {
         }
     }
 
-    getCustomerCarts(customerId: number) {
+    getCustomerCart(customerId: number) {
         const queryUrl = environment.apiHost + '/customercart/' + customerId;
         return this.http.get(queryUrl);
     }
 
     addCartItem(cartItem: CartItem) {
+        const headersObject = new HttpHeaders();
+        headersObject.append('Accept', 'application/json');
+        headersObject.append('Content-Type', 'application/json');
+
+        const httpOptions = {
+            headers: headersObject
+        };
+
         const queryUrl = environment.apiHost + '/addcartitem';
-        return this.http.post(queryUrl, cartItem);
+        return this.http.post(queryUrl, cartItem, httpOptions);
     }
 }

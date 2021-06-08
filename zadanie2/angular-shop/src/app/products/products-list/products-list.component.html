@@ -17,17 +17,8 @@
                 </div>
 
                 <div class="body">
-                    <div class="product-box"
-                         [routerLink]="['/products/', product.id]"
-                         *ngFor="let product of filtered">
-                        <div class="heading">
-                            <div class="heading-text">{{product.name}}</div>
-                            <div class="heading-price">{{product.price}} zł</div>
-                        </div>
-                        <div class="button">
-                            <div class="c-btn__standard c-btn__standard--orange-red">Zobacz produkt</div>
-                        </div>
-                    </div>
+                    <app-product-box *ngFor="let product of filtered"
+                                     [product]="product"></app-product-box>
                 </div>
 
             </div>
