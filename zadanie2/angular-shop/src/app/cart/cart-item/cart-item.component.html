@@ -1,0 +1,7 @@
+<div class="cart-item l-col-8">
+    <div class="product-name">{{cartItem.product.name}}</div>
+    <div class="u-display-flex">
+        <div class="price">{{cartItem.product.price}} zł</div>
+        <mat-icon class="delete" (click)="removeCartItem.emit(cartItem.id)">close</mat-icon>
+    </div>
+</div>

@@ -30,6 +30,9 @@ import {OrderRepositoryService} from './orders/service/order-repository.service'
 import {OrdersResolveService} from './orders/service/orders-resolve.service';
 import {CartRepositoryService} from './cart/service/cart-repository.service';
 import {CartResolveService} from './cart/service/cart-resolve.service';
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material/snack-bar';
+import { CartItemComponent } from './cart/cart-item/cart-item.component';
+import { OrderDetailsComponent } from './orders/order-details/order-details.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +46,9 @@ import {CartResolveService} from './cart/service/cart-resolve.service';
         CartComponent,
         OrdersListComponent,
         ReviewsListComponent,
-        ReviewDetailsComponent
+        ReviewDetailsComponent,
+        CartItemComponent,
+        OrderDetailsComponent
     ],
     imports: [
         BrowserModule,
@@ -54,6 +59,7 @@ import {CartResolveService} from './cart/service/cart-resolve.service';
         FormsModule
     ],
     providers: [
+        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {panelClass: 'custom-snackbar', verticalPosition: 'top', duration: 5000}},
         // {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true},
         ProductRepositoryService,
         ProductResolveService,

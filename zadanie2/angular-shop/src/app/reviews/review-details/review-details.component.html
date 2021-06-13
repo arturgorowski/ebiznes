@@ -1,4 +1,8 @@
 <div class="review">
-    <div class="review-score">{{review.score}}</div>
+    <div class="u-display-flex u-align-items-center">
+        <div class="review-customer">{{review.customer.firstName}} {{review.customer.lastName}}</div>
+        <div [routerLink]="['/products', review.product.id]" class="review-product">{{review.product.name}}</div>
+        <div class="review-score">{{review.score}}</div>
+    </div>
     <div class="review-content">{{review.content}}</div>
 </div>

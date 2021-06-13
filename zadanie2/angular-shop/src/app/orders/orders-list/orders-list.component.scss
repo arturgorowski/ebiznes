@@ -1,0 +1,12 @@
+@import "fonts";
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+
+    & .heading {
+        font-size: $font-size-24;
+        font-weight: $font-weight-bold;
+        padding: 25px 0 20px;
+    }
+}

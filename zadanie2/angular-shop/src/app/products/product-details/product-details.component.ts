@@ -6,7 +6,8 @@ import {Review} from '../../_models/Review';
 import {ShopStorage} from '../../_helpers/ShopStorage';
 import {CartRepositoryService} from '../../cart/service/cart-repository.service';
 import {Cart, CartItem} from '../../_models/Cart';
-import {mergeMap, switchMap} from 'rxjs/operators';
+import {switchMap} from 'rxjs/operators';
+import swal from 'sweetalert2';
 
 @Component({
     selector: 'app-product-details',
@@ -43,23 +44,26 @@ export class ProductDetailsComponent implements OnInit {
         const cartId = ShopStorage.getCart();
         console.log(cartId);
         if (!cartId) {
-            const newCart: Cart = {id: 0, customer: 1, totalProductsPrice: 1, coupon: 1};
+            const newCart: Cart = {id: 0, customer: 1, coupon: 1};
             this.cartRepository.addCart(newCart)
-                .pipe(mergeMap((cart: Cart) => {
+                .pipe(switchMap((cart: Cart) => {
+                    console.log(cart);
                     ShopStorage.setCart(cart.id);
                     return this.addItemCart(cart.id);
-                }))
-                .subscribe();
+                })).subscribe(result => this.productAddedToCart(result));
         } else {
-            this.addItemCart(cartId).subscribe((cart: Cart) => {
-                console.log(cart);
-            });
+            this.addItemCart(cartId).subscribe(result => this.productAddedToCart(result));
         }
     }
 
     addItemCart(cartId: number) {
-        console.log('dodaj produkt xd');
+        console.log('dodaj produkt do koszyka o id: ', cartId);
         const cartItem: CartItem = {id: 0, cart: cartId, product: this.product.id, productQuantity: 1};
         return this.cartRepository.addCartItem(cartItem);
+    }
+
+    productAddedToCart(message) {
+        swal(message);
+        this.router.navigate(['/cart']);
     }
 }

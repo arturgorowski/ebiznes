@@ -1,1 +1,27 @@
-<p>cart works!</p>
+<div class="l-container">
+    <div class="l-grid">
+        <div class="l-col-8">
+            <div *ngIf="!cartItems" class="cart__heading">Koszyk jest pusty</div>
+
+            <div *ngIf="cartItems" class="cart__container">
+                <div class="cart__heading">Produkty w koszyku:</div>
+
+                <app-cart-item *ngFor="let cartItem of cartItems"
+                               [cartItem]="cartItem"
+                               [cartId]="cart.id"
+                               (removeCartItem)="removeCartItem($event)">
+                </app-cart-item>
+            </div>
+
+        </div>
+        <div class="l-col-4">
+            <div class="cart__summary">
+                <div class="heading">Podsumowanie:</div>
+                <div class="summary">Razem: {{totalProductPrice}} zł</div>
+                <button class="c-btn__standard c-btn__standard--orange-red"
+                     [disabled]="!cartItems"
+                     (click)="order()">Zamawiam i płacę</button>
+            </div>
+        </div>
+    </div>
+</div>

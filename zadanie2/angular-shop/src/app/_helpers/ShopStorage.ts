@@ -45,6 +45,7 @@ export class ShopStorage {
     }
 
     static setCart(cart: number) {
+        console.log('dodawanie id do storage: ', cart);
         this.addItemToShop(KEY_CART, cart);
     }
 

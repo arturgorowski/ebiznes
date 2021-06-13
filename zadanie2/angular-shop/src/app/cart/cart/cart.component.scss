@@ -1,0 +1,34 @@
+@import "fonts";
+@import "./colors";
+
+.cart {
+
+    &__heading {
+        font-size: $font-size-32;
+        line-height: 30px;
+        padding: 50px 0;
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__summary {
+        margin-top: 80px;
+        display: flex;
+        flex-direction: column;
+
+        & .heading {
+            font-size: 24px;
+            line-height: 24px;
+            font-weight: $font-weight-semibold;
+        }
+
+        & .summary {
+            padding: 20px 0;
+            font-size: 20px;
+            line-height: 20px;
+        }
+    }
+}

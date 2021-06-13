@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ShopStorage} from '../../_helpers/ShopStorage';
 import {EMPTY} from 'rxjs';
@@ -22,12 +22,17 @@ export class CartRepositoryService {
 
     getCart() {
         const cartId = ShopStorage.getCart();
+        console.log(cartId);
         if (cartId) {
-            const queryUrl = environment.apiHost + '/cart/' + cartId;
-            return this.http.get(queryUrl);
+            return this.getCartById(cartId);
         } else {
             return EMPTY;
         }
+    }
+
+    getCartById(cartId: number) {
+        const queryUrl = environment.apiHost + '/cart/' + cartId;
+        return this.http.get(queryUrl);
     }
 
     getCustomerCart(customerId: number) {
@@ -36,15 +41,17 @@ export class CartRepositoryService {
     }
 
     addCartItem(cartItem: CartItem) {
-        const headersObject = new HttpHeaders();
-        headersObject.append('Accept', 'application/json');
-        headersObject.append('Content-Type', 'application/json');
-
-        const httpOptions = {
-            headers: headersObject
-        };
-
         const queryUrl = environment.apiHost + '/addcartitem';
-        return this.http.post(queryUrl, cartItem, httpOptions);
+        return this.http.post(queryUrl, cartItem);
+    }
+
+    getCartItems(cartId: number) {
+        const queryUrl = environment.apiHost + '/cartitems/' + cartId;
+        return this.http.get(queryUrl);
+    }
+
+    removeCartItem(cartItemId: number, cartId: number) {
+        const queryUrl = environment.apiHost + `/deletecartitem/${cartItemId}/cart/${cartId}`;
+        return this.http.get(queryUrl);
     }
 }

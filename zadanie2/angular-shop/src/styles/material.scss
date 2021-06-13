@@ -92,3 +92,15 @@
         padding: 0;
     }
 }
+
+.custom-snackbar {
+    background-color: $cp-white;
+    margin-top: 75px !important;
+    border-radius: 0 !important;
+    color: $cp-space-cadet;
+    border: 2px solid $cp-space-cadet;
+    padding: 12px 26px !important;
+    font-size: $font-size-14;
+    line-height: 18px;
+    box-shadow: none;
+}

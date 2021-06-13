@@ -1,13 +1,15 @@
+import {Product} from './Product';
+
 export interface Cart {
     id: number;
     customer: number;
-    totalProductsPrice: number;
     coupon: number;
+    cartItems?: CartItem[];
 }
 
 export interface CartItem {
     id: number;
     cart: number;
-    product: number;
+    product: Product|number;
     productQuantity: number;
 }

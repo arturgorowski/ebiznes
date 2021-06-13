@@ -8,7 +8,8 @@ export class OrdersResolveService implements Resolve<any> {
     constructor(private orderRepository: OrderRepositoryService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        return this.orderRepository.getOrders();
+        const customerId = 1;
+        return this.orderRepository.getCustomerOrders(customerId);
     }
 
 }
