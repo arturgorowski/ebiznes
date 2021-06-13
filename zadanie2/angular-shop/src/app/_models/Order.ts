@@ -1,11 +1,13 @@
+import {Product} from './Product';
+
 export interface Order {
     id: number;
-    createdAt: string;
     customer: number;
-    isPaid: boolean;
-    paidAt: string;
     totalOrderValue: number;
     coupon: number;
+    products?: Product[];
+    orderItems?: OrderItem[];
+    cartId?: number;
 }
 
 

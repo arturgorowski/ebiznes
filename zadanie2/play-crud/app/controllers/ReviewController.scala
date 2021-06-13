@@ -1,19 +1,22 @@
 package controllers
 
 import models.Review
-import models.repository.ReviewRepository
+import models.repository.{CustomerRepository, ProductRepository, ReviewRepository}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formats.floatFormat
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import play.api.mvc._
 
 import javax.inject._
-import scala.concurrent.ExecutionContext
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext}
 
 
 @Singleton
 class ReviewController @Inject()(reviewRepository: ReviewRepository,
+                                 productRepository: ProductRepository,
+                                 customerRepository: CustomerRepository,
                                  controllerComponents: MessagesControllerComponents)
                                 (implicit ec: ExecutionContext)
     extends MessagesAbstractController(controllerComponents) {
@@ -34,10 +37,26 @@ class ReviewController @Inject()(reviewRepository: ReviewRepository,
     }
 
     //JSON
-    def getReviews: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-        reviewRepository.list().map { reviews =>
-            Ok(Json.toJson(reviews)).as("application/json")
+    def getReviews: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+        val reviews = Await.ready(reviewRepository.list(), Duration.Inf).value.get.get
+
+        var reviewsModel: List[ReviewModel] = List[ReviewModel]()
+        reviews.foreach{ review =>
+            val product = Await.ready(productRepository.getById(review.product), Duration.Inf).value.get.get
+            val customer = Await.ready(customerRepository.getById(review.customer), Duration.Inf).value.get.get
+            reviewsModel = ReviewModel(
+                review.id,
+                ProductModel(product.id, product.name),
+                CustomerModel(customer.id, customer.firstName, customer.lastName),
+                review.content,
+                review.score) :: reviewsModel
         }
+
+        Ok(Json.toJson(reviewsModel))
+
+//        reviewRepository.list().map { reviews =>
+//            Ok(Json.toJson(reviews)).as("application/json")
+//        }
     }
 
     def getReview(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
@@ -81,3 +100,17 @@ class ReviewController @Inject()(reviewRepository: ReviewRepository,
 }
 
 case class CreateReviewForm(product: Int, customer: Int, content: String, score: Float)
+
+case class ReviewModel(id: Int, product: ProductModel, customer: CustomerModel, content: String, score: Float)
+object ReviewModel{
+    implicit val reviewFormat: OFormat[ReviewModel] = Json.format[ReviewModel]
+}
+
+case class ProductModel(id: Int, name: String)
+object ProductModel{
+    implicit val productFormat: OFormat[ProductModel] = Json.format[ProductModel]
+}
+case class CustomerModel(id: Int, firstName: String, lastName: String)
+object CustomerModel{
+    implicit val customerFormat: OFormat[CustomerModel] = Json.format[CustomerModel]
+}

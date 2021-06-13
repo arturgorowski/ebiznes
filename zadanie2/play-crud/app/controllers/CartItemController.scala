@@ -1,16 +1,19 @@
 package controllers
 
 import javax.inject._
-import models.CartItem
-import models.repository.CartItemRepository
+import models.{CartItem, Product}
+import models.repository.{CartItemRepository, ProductRepository}
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import play.api.mvc._
-import scala.concurrent.ExecutionContext
+
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext}
 
 @Singleton
 class CartItemController @Inject()(cartItemRepository: CartItemRepository,
+                                   productRepository: ProductRepository,
                                   controllerComponents: MessagesControllerComponents)
                                  (implicit ec: ExecutionContext)
     extends MessagesAbstractController(controllerComponents) {
@@ -36,10 +39,16 @@ class CartItemController @Inject()(cartItemRepository: CartItemRepository,
 //        }
 //    }
 
-    def getCartItems(cart_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-        cartItemRepository.getByCart(cart_id: Int).map { cartItems =>
-            Ok(Json.toJson(cartItems)).as("application/json")
+    def getCartItems(cart_id: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+        val cartItems = Await.ready(cartItemRepository.getByCart(cart_id: Int), Duration.Inf).value.get.get
+
+        implicit var cartItemModel: List[CartItemProductModel] = List[CartItemProductModel]()
+        cartItems.foreach{ cartItem =>
+            val product = Await.ready(productRepository.getById(cartItem.product), Duration.Inf).value.get.get
+            val newCartItem = CartItemProductModel(cartItem.id, product, cartItem.productQuantity)
+            cartItemModel = newCartItem :: cartItemModel
         }
+        Ok(Json.toJson(cartItemModel))
     }
 
     def getCartItem(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
@@ -50,15 +59,24 @@ class CartItemController @Inject()(cartItemRepository: CartItemRepository,
 
     def delete(id: Int, cart_id: Int): Action[AnyContent] = Action {
         cartItemRepository.delete(id)
-        Redirect("/cartItems/" + cart_id)
+        Redirect("/cartitems/" + cart_id)
     }
 
     def addCartItem(): Action[AnyContent] = Action { implicit request =>
         val cartItems_json = request.body.asJson.get
         val cartItem = cartItems_json.as[CartItem]
         cartItemRepository.create(cartItem.cart, cartItem.product, cartItem.productQuantity)
-        Redirect("/cartitems/" + cartItem.cart)
+        Ok(Json.toJson("Produkt dodano do koszyka")).as("application/json")
     }
 }
 
 case class CreateCartItemForm(cart: Int, product: Int, productQuantity: Int)
+
+
+case class CartItemProductModel(id: Int,
+                                product: Product,
+                                productQuantity: Int)
+
+object CartItemProductModel{
+    implicit val cartItemFormat: OFormat[CartItemProductModel] = Json.format[CartItemProductModel]
+}

@@ -18,16 +18,13 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
 
     class OrderTable(tag: Tag) extends Table[Order](tag, "order") {
         def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-        def createdAt = column[String]("createdAt")
         def customer = column[Int]("customer")
         def customer_fk = foreignKey("customer_fk", customer, customerVal)(_.id)
-        def isPaid = column[Boolean]("isPaid")
-        def paidAt = column[String]("paidAt")
         def totalOrderValue = column[Float]("totalOrderValue")
         def coupon = column[Int]("coupon")
         def coupon_fk = foreignKey("coupon_fk", coupon, couponVal)(_.id)
 
-        def * = (id, createdAt, customer, isPaid, paidAt, totalOrderValue, coupon) <> ((Order.apply _).tupled, Order.unapply)
+        def * = (id, customer, totalOrderValue, coupon) <> ((Order.apply _).tupled, Order.unapply)
     }
 
     import couponRepository.CouponTable
@@ -37,11 +34,11 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
     val customerVal = TableQuery[CustomerTable]
     val couponVal = TableQuery[CouponTable]
 
-    def create(createdAt: String, customer: Int, isPaid: Boolean, paidAt: String, totalOrderValue: Float, coupon: Int): Future[Order] = db.run {
-        (order.map(o => (o.createdAt, o.customer, o.isPaid, o.paidAt, o.totalOrderValue, o.coupon))
+    def create(customer: Int, totalOrderValue: Float, coupon: Int): Future[Order] = db.run {
+        (order.map(o => (o.customer, o.totalOrderValue, o.coupon))
             returning order.map(_.id)
-            into {case((createdAt, customer, isPaid, paidAt, totalOrderValue, coupon), id) => Order(id, createdAt, customer, isPaid, paidAt, totalOrderValue, coupon)}
-        ) += (createdAt, customer, isPaid, paidAt, totalOrderValue, coupon)
+            into {case((customer, totalOrderValue, coupon), id) => Order(id, customer, totalOrderValue, coupon)}
+        ) += (customer, totalOrderValue, coupon)
     }
 
     def list(): Future[Seq[Order]] = db.run {

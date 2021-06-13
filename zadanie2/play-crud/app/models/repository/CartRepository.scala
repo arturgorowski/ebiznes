@@ -22,12 +22,10 @@ class CartRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         def customer = column[Int]("customer")
         def customer_fk = foreignKey("customer_fk", customer, customerVal)(_.id)
 
-        def totalProductsPrice = column[Float]("totalProductsPrice")
-
         def coupon = column[Int]("coupon")
         def coupon_fk = foreignKey("coupon_fk", coupon, couponVal)(_.id)
 
-        def * = (id, customer, totalProductsPrice, coupon) <> ((Cart.apply _).tupled, Cart.unapply)
+        def * = (id, customer, coupon) <> ((Cart.apply _).tupled, Cart.unapply)
     }
 
     import couponRepository.CouponTable
@@ -37,11 +35,11 @@ class CartRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
     private val customerVal = TableQuery[CustomerTable]
     private val couponVal = TableQuery[CouponTable]
 
-    def create(customer: Int, totalProductsPrice: Float, coupon: Int): Future[Cart] = db.run {
-        (cart.map(c => (c.customer, c.totalProductsPrice, c.coupon))
+    def create(customer: Int, coupon: Int): Future[Cart] = db.run {
+        (cart.map(c => (c.customer, c.coupon))
             returning cart.map(_.id)
-            into {case ((customer, totalProductsPrice, coupon), id) => Cart(id, customer, totalProductsPrice, coupon)}
-        ) += (customer, totalProductsPrice, coupon)
+            into {case ((customer, coupon), id) => Cart(id, customer, coupon)}
+        ) += (customer, coupon)
     }
 
     def list(): Future[Seq[Cart]] = db.run {
@@ -56,8 +54,12 @@ class CartRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         cart.filter(_.id === id).result.headOption
     }
 
-    def getByCustomer(customer_id: Int): Future[Option[Cart]] = db.run {
+    def getByCustomerOption(customer_id: Int): Future[Option[Cart]] = db.run {
         cart.filter(_.customer === customer_id).result.headOption
+    }
+
+    def getByCustomer(customer_id: Int): Future[Cart] = db.run {
+        cart.filter(_.customer === customer_id).result.head
     }
 
     def getByCustomers(customer_ids: List[Int]): Future[Seq[Cart]] = db.run {

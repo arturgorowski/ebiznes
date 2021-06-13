@@ -16,7 +16,7 @@ RUN npm install -g npm@latest
 RUN npm install -g @angular/cli
 
 EXPOSE 8080
-EXPOSE 4200
+EXPOSE 4201
 EXPOSE 9000
 
 

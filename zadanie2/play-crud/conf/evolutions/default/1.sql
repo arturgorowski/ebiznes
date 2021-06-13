@@ -14,7 +14,6 @@ CREATE TABLE "cart"
 (
     "id"                 INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
     "customer"           INTEGER  NOT NULL,
-    "totalProductsPrice" DECIMAL  NOT NULL,
     "coupon"             INTEGER  NOT NULL,
     FOREIGN KEY (coupon) references coupon (id),
     FOREIGN KEY (customer) references customer (id)
@@ -62,10 +61,7 @@ CREATE TABLE "customer"
 CREATE TABLE "order"
 (
     "id"              INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "createdAt"       DATETIME NOT NULL,
     "customer"        INTEGER  NOT NULL,
-    "isPaid"          INTEGER  NOT NULL,
-    "paidAt"          VARCHAR  NOT NULL,
     "totalOrderValue" DECIMAL  NOT NULL,
     "coupon"          INTEGER  NOT NULL,
     FOREIGN KEY (customer) references customer (id),
