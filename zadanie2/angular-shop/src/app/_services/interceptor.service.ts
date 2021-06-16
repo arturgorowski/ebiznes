@@ -18,7 +18,7 @@ export class Interceptor implements HttpInterceptor {
                 url: request.url,
                 setHeaders: {
                     // 'Token': token,
-                    'Access-Control-Allow-Origin': '*',
+                    // 'Access-Control-Allow-Origin': '*',
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
                 },

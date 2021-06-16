@@ -77,10 +77,10 @@ class OrderController @Inject()(orderRepository: OrderRepository,
     def addOrder(): Action[AnyContent] = Action { implicit request =>
         val orderJson = request.body.asJson.get
         val order = orderJson.as[OrderModel]
-        val new_order: Order = Await.ready(orderRepository.create(order.customer, order.totalOrderValue, order.coupon), Duration.Inf).value.get.get
+        val newOrder: Order = Await.ready(orderRepository.create(order.customer, order.totalOrderValue, order.coupon), Duration.Inf).value.get.get
 
         order.products.foreach{ product =>
-            Await.ready(orderItemRepository.create(new_order.id, product.id), Duration.Inf).value.get.get
+            Await.ready(orderItemRepository.create(newOrder.id, product.id), Duration.Inf).value.get.get
         }
 
         val cartItems = Await.ready(cartItemRepository.getByCart(order.cartId), Duration.Inf).value.get.get

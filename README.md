@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=arturgorowski_ebiznes&metric=alert_status)](https://sonarcloud.io/dashboard?id=arturgorowski_ebiznes)
+
 # ebiznes
 
 ### Zadanie 1. Docker
