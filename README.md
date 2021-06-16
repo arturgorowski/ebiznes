@@ -1,4 +1,6 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=arturgorowski_ebiznes&metric=alert_status)](https://sonarcloud.io/dashboard?id=arturgorowski_ebiznes)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=arturgorowski_ebiznes&metric=bugs)](https://sonarcloud.io/dashboard?id=arturgorowski_ebiznes)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=arturgorowski_ebiznes&metric=code_smells)](https://sonarcloud.io/dashboard?id=arturgorowski_ebiznes)
 
 # ebiznes
 
