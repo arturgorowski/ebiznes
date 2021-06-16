@@ -20,10 +20,10 @@ class CartItemRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
         def cart = column[Int]("cart")
-        def cart_fk = foreignKey("cart_fk", cart, cartVal)(_.id)
+        def cartFk = foreignKey("cart_fk", cart, cartVal)(_.id)
 
         def product = column[Int]("product")
-        def product_fk = foreignKey("product_fk", product, productVal)(_.id)
+        def productFk = foreignKey("product_fk", product, productVal)(_.id)
 
         def productQuantity = column[Int]("productQuantity")
 

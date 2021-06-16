@@ -37,13 +37,6 @@ class OrderItemController @Inject()(orderItemRepository: OrderItemRepository,
         }
     }
 
-//    def getOrderItem(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-//        orderItemRepository.getByIdOption(id: Int).map {
-//            case Some(cartItems) => Ok(Json.toJson(cartItems)).as("application/json")
-//            case None => Redirect(routes.OrderItemController.getOrderItems(id: Int))
-//        }
-//    }
-
     def getOrderItem(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         orderItemRepository.getById(id: Int).map { orderItem =>
             Ok(Json.toJson(orderItem)).as(appJson)

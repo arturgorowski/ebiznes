@@ -24,7 +24,7 @@ class ProductRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         def description = column[String]("description")
         def price = column[Float]("price")
         def category = column[Int]("category")
-        def category_fk = foreignKey("category_fk",category, cat)(_.id)
+        def categoryFk = foreignKey("category_fk",category, cat)(_.id)
 
         /**
          * This is the tables default "projection".

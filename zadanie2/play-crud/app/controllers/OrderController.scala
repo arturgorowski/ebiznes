@@ -45,13 +45,6 @@ class OrderController @Inject()(orderRepository: OrderRepository,
         }
     }
 
-//    def getCustomerOrder(customer_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-//        orderRepository.getByCustomer(customer_id: Int).map {
-//            case Some(orders) => Ok(Json.toJson(orders)).as("application/json")
-//            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
-//        }
-//    }
-
     def getCustomerOrder(customerId: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
         val orders = Await.ready(orderRepository.getByCustomer(customerId), Duration.Inf).value.get.get
 

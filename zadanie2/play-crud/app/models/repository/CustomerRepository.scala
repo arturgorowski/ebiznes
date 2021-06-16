@@ -31,7 +31,7 @@ class CustomerRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
 
         def address = column[Int]("address")
 
-        def address_fk = foreignKey("address_fk", address, addressVal)(_.id)
+        def addressFk = foreignKey("address_fk", address, addressVal)(_.id)
 
         def * = (id, username, firstName, lastName, password, createdAt, address) <> ((Customer.apply _).tupled, Customer.unapply)
     }

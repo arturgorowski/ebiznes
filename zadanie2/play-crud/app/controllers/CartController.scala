@@ -39,26 +39,12 @@ class CartController @Inject()(cartRepository: CartRepository,
         }
     }
 
-    def getCustomerCart(customer_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-        cartRepository.getByCustomerOption(customer_id: Int).map {
+    def getCustomerCart(customerId: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+        cartRepository.getByCustomerOption(customerId: Int).map {
             case Some(cart) => Ok(Json.toJson(cart)).as(appJson)
             case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
         }
     }
-
-//    def getCustomerCart(customer_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-//        cartRepository.getByCustomer(customer_id: Int).map {
-//            cart => Ok(Json.toJson(cart)).as("application/json")
-//        }
-//    }
-
-
-//    def getCart(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-//        cartRepository.getByIdOption(id: Int).map {
-//            case Some(carts) => Ok(Json.toJson(carts))
-//            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
-//        }
-//    }
 
     def getCart(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         cartRepository.getById(id: Int).map {
@@ -77,9 +63,6 @@ class CartController @Inject()(cartRepository: CartRepository,
         Await.ready(cartRepository.create(cart.customer, cart.coupon), Duration.Inf).value.get.get
 
         val customerCart = Await.ready(cartRepository.getByCustomer(cart.customer: Int), Duration.Inf).value.get.get
-//        cartRepository.getByCustomer(cart.customer: Int).map {
-//            cart => Ok(Json.toJson(cart)).as("application/json")
-//        }
         Ok(Json.toJson(customerCart)).as(appJson)
     }
 }

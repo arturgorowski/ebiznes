@@ -20,9 +20,9 @@ class ReviewRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
 
         def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
         def product = column[Int]("product")
-        def product_fk = foreignKey("product_fk", product, productValue)(_.id)
+        def productFk = foreignKey("product_fk", product, productValue)(_.id)
         def customer = column[Int]("customer")
-        def customer_fk = foreignKey("customer_fk", customer, customerValue)(_.id)
+        def customerFk = foreignKey("customer_fk", customer, customerValue)(_.id)
         def content = column[String]("content")
         def score = column[Float]("score")
         def * = (id, product, customer, content, score) <> ((Review.apply _).tupled, Review.unapply)

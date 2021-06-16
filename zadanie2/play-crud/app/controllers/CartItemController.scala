@@ -35,12 +35,6 @@ class CartItemController @Inject()(cartItemRepository: CartItemRepository,
     }
 
     // JSON METHODS
-//    def getCartItems: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-//        cartItemRepository.list().map { cartItems =>
-//            Ok(Json.toJson(cartItems)).as("application/json")
-//        }
-//    }
-
     def getCartItems(cartId: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
         val cartItems = Await.ready(cartItemRepository.getByCart(cartId: Int), Duration.Inf).value.get.get
 

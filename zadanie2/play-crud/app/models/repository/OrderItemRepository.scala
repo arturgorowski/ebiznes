@@ -22,11 +22,11 @@ class OrderItemRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
 
         def order = column[Int]("order")
 
-        def order_fk = foreignKey("order_fk", order, orderVal)(_.id)
+        def orderFk = foreignKey("order_fk", order, orderVal)(_.id)
 
         def product = column[Int]("product")
 
-        def product_fk = foreignKey("product_fk", product, productVal)(_.id)
+        def productFk = foreignKey("product_fk", product, productVal)(_.id)
 
         def * = (id, order, product) <> ((OrderItem.apply _).tupled, OrderItem.unapply)
     }

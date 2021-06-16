@@ -20,10 +20,10 @@ class CartRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
         def customer = column[Int]("customer")
-        def customer_fk = foreignKey("customer_fk", customer, customerVal)(_.id)
+        def customerFk = foreignKey("customer_fk", customer, customerVal)(_.id)
 
         def coupon = column[Int]("coupon")
-        def coupon_fk = foreignKey("coupon_fk", coupon, couponVal)(_.id)
+        def couponFk = foreignKey("coupon_fk", coupon, couponVal)(_.id)
 
         def * = (id, customer, coupon) <> ((Cart.apply _).tupled, Cart.unapply)
     }

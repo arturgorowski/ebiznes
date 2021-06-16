@@ -40,13 +40,6 @@ class ProductController @Inject()(productRepository: ProductRepository,
         }
     }
 
-//    def getProductByCategory(category_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-//        productRepository.getByCategoryOption(category_id: Int).map {
-//            case Some(reviews) => Ok(Json.toJson(reviews)).as("application/json")
-//            case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
-//        }
-//    }
-
     def getProductByCategory(categoryId: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         productRepository.getByCategory(categoryId: Int).map {
             reviews => Ok(Json.toJson(reviews)).as(appJson)
