@@ -71,7 +71,7 @@ export class CartComponent implements OnInit {
 
     order() {
         const products: Product[] = [];
-        this.cartItems.forEach((cartItem: CartItem) => products.push(cartItem.product as Product));
+        this.cartItems.forEach((cartItem: CartItem) => products.push(cartItem.product));
         console.log(products);
         const newOrder: Order = {id: 0, customer: 1, totalOrderValue: this.totalProductPrice, coupon: 1, cartId: this.cart.id, products};
         this.orderRepository.addOrder(newOrder).subscribe(result => {

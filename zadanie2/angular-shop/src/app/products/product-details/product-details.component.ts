@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Review} from '../../_models/Review';
 import {ShopStorage} from '../../_helpers/ShopStorage';
 import {CartRepositoryService} from '../../cart/service/cart-repository.service';
-import {Cart, CartItem, NewCartItem} from '../../_models/Cart';
+import {Cart, NewCartItem} from '../../_models/Cart';
 import {switchMap} from 'rxjs/operators';
 import swal from 'sweetalert2';
 

@@ -9,7 +9,6 @@ import {ProductsListComponent} from './products/products-list/products-list.comp
 import {ProductResolveService} from './products/service/product-resolve.service';
 import {ProductRepositoryService} from './products/service/product-repository.service';
 import {HttpClientModule} from '@angular/common/http';
-// import {Interceptor} from './_services/interceptor.service';
 import { ProductBoxComponent } from './products/product-box/product-box.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from '../material/material.module';

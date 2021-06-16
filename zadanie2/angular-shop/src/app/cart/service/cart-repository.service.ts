@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ShopStorage} from '../../_helpers/ShopStorage';
 import {EMPTY} from 'rxjs';
-import {Cart, CartItem, NewCartItem} from '../../_models/Cart';
+import {Cart, NewCartItem} from '../../_models/Cart';
 
 @Injectable()
 export class CartRepositoryService {
