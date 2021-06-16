@@ -18,6 +18,8 @@ class CartItemController @Inject()(cartItemRepository: CartItemRepository,
                                  (implicit ec: ExecutionContext)
     extends MessagesAbstractController(controllerComponents) {
 
+    val appJson = "application/json";
+
     val cartItemFormForm: Form[CreateCartItemForm] = Form {
         mapping(
             "cart" -> number,
@@ -39,8 +41,8 @@ class CartItemController @Inject()(cartItemRepository: CartItemRepository,
 //        }
 //    }
 
-    def getCartItems(cart_id: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-        val cartItems = Await.ready(cartItemRepository.getByCart(cart_id: Int), Duration.Inf).value.get.get
+    def getCartItems(cartId: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+        val cartItems = Await.ready(cartItemRepository.getByCart(cartId: Int), Duration.Inf).value.get.get
 
         implicit var cartItemModel: List[CartItemProductModel] = List[CartItemProductModel]()
         cartItems.foreach{ cartItem =>
@@ -53,20 +55,20 @@ class CartItemController @Inject()(cartItemRepository: CartItemRepository,
 
     def getCartItem(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         cartItemRepository.getById(id: Int).map { cartItem =>
-            Ok(Json.toJson(cartItem)).as("application/json")
+            Ok(Json.toJson(cartItem)).as(appJson)
         }
     }
 
-    def delete(id: Int, cart_id: Int): Action[AnyContent] = Action {
+    def delete(id: Int, cartId: Int): Action[AnyContent] = Action {
         cartItemRepository.delete(id)
-        Redirect("/cartitems/" + cart_id)
+        Redirect("/cartitems/" + cartId)
     }
 
     def addCartItem(): Action[AnyContent] = Action { implicit request =>
-        val cartItems_json = request.body.asJson.get
-        val cartItem = cartItems_json.as[CartItem]
+        val cartItemsJson = request.body.asJson.get
+        val cartItem = cartItemsJson.as[CartItem]
         cartItemRepository.create(cartItem.cart, cartItem.product, cartItem.productQuantity)
-        Ok(Json.toJson("Produkt dodano do koszyka")).as("application/json")
+        Ok(Json.toJson("Produkt dodano do koszyka")).as(appJson)
     }
 }
 

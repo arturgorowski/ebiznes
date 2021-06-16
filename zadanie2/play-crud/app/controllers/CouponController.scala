@@ -55,8 +55,8 @@ class CouponController @Inject()(couponRepository: CouponRepository,
     }
 
     def addCoupon(): Action[AnyContent] = Action { implicit request =>
-        val coupon_json = request.body.asJson.get
-        val coupon = coupon_json.as[Coupon]
+        val couponJson = request.body.asJson.get
+        val coupon = couponJson.as[Coupon]
         couponRepository.create(coupon.code, coupon.couponType, coupon.discount, coupon.isActive, coupon.createdAt, coupon.usedAt)
         Redirect("/coupons")
     }

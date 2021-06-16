@@ -54,30 +54,30 @@ class CartRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         cart.filter(_.id === id).result.headOption
     }
 
-    def getByCustomerOption(customer_id: Int): Future[Option[Cart]] = db.run {
-        cart.filter(_.customer === customer_id).result.headOption
+    def getByCustomerOption(customerId: Int): Future[Option[Cart]] = db.run {
+        cart.filter(_.customer === customerId).result.headOption
     }
 
-    def getByCustomer(customer_id: Int): Future[Cart] = db.run {
-        cart.filter(_.customer === customer_id).result.head
+    def getByCustomer(customerId: Int): Future[Cart] = db.run {
+        cart.filter(_.customer === customerId).result.head
     }
 
-    def getByCustomers(customer_ids: List[Int]): Future[Seq[Cart]] = db.run {
-        cart.filter(_.customer inSet customer_ids).result
+    def getByCustomers(customerIds: List[Int]): Future[Seq[Cart]] = db.run {
+        cart.filter(_.customer inSet customerIds).result
     }
 
-    def getByCoupon(coupon_id: Int): Future[Seq[Cart]] = db.run {
-        cart.filter(_.coupon === coupon_id).result
+    def getByCoupon(couponId: Int): Future[Seq[Cart]] = db.run {
+        cart.filter(_.coupon === couponId).result
     }
 
-    def getByCoupons(coupon_id: List[Int]): Future[Seq[Cart]] = db.run {
-        cart.filter(_.coupon inSet coupon_id).result
+    def getByCoupons(couponId: List[Int]): Future[Seq[Cart]] = db.run {
+        cart.filter(_.coupon inSet couponId).result
     }
 
     def delete(id: Int): Future[Unit] = db.run(cart.filter(_.id === id).delete).map(_ => ())
 
-    def update(id: Int, new_cart: Cart): Future[Unit] = {
-        val cartToUpdate: Cart = new_cart.copy(id)
+    def update(id: Int, newCart: Cart): Future[Unit] = {
+        val cartToUpdate: Cart = newCart.copy(id)
         db.run(cart.filter(_.id === id).update(cartToUpdate)).map(_ => ())
     }
 }

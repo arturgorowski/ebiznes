@@ -62,8 +62,8 @@ class CouponRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)
 
     def delete(id: Int): Future[Unit] = db.run(coupon.filter(_.id === id).delete).map(_ => ())
 
-    def update(id: Int, new_coupon: Coupon): Future[Unit] = {
-        val couponToUpdate: Coupon = new_coupon.copy(id)
+    def update(id: Int, newCoupon: Coupon): Future[Unit] = {
+        val couponToUpdate: Coupon = newCoupon.copy(id)
         db.run(coupon.filter(_.id === id).update(couponToUpdate)).map(_ => ())
     }
 }

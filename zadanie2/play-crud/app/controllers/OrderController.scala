@@ -22,6 +22,8 @@ class OrderController @Inject()(orderRepository: OrderRepository,
                                (implicit ec: ExecutionContext)
     extends MessagesAbstractController(controllerComponents) {
 
+    val appJson = "application/json";
+
     val cartForm: Form[CreateOrderForm] = Form {
         mapping(
             "customer" -> number,
@@ -39,7 +41,7 @@ class OrderController @Inject()(orderRepository: OrderRepository,
     // JSON METHODS
     def getOrders: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         orderRepository.list().map { carts =>
-            Ok(Json.toJson(carts)).as("application/json")
+            Ok(Json.toJson(carts)).as(appJson)
         }
     }
 
@@ -50,8 +52,8 @@ class OrderController @Inject()(orderRepository: OrderRepository,
 //        }
 //    }
 
-    def getCustomerOrder(customer_id: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-        val orders = Await.ready(orderRepository.getByCustomer(customer_id), Duration.Inf).value.get.get
+    def getCustomerOrder(customerId: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+        val orders = Await.ready(orderRepository.getByCustomer(customerId), Duration.Inf).value.get.get
 
         implicit var ordersModel: List[OrderModelForFront] = List[OrderModelForFront]()
         orders.foreach{ order =>
@@ -80,8 +82,8 @@ class OrderController @Inject()(orderRepository: OrderRepository,
     }
 
     def addOrder(): Action[AnyContent] = Action { implicit request =>
-        val order_json = request.body.asJson.get
-        val order = order_json.as[OrderModel]
+        val orderJson = request.body.asJson.get
+        val order = orderJson.as[OrderModel]
         val new_order: Order = Await.ready(orderRepository.create(order.customer, order.totalOrderValue, order.coupon), Duration.Inf).value.get.get
 
         order.products.foreach{ product =>
@@ -94,7 +96,7 @@ class OrderController @Inject()(orderRepository: OrderRepository,
         }
         Await.ready(cartRepository.delete(order.cartId), Duration.Inf).value.get.get
 
-        Ok(Json.toJson("Pomyślnie złożono zamówienie")).as("application/json")
+        Ok(Json.toJson("Pomyślnie złożono zamówienie")).as(appJson)
     }
 }
 

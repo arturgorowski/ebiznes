@@ -59,14 +59,14 @@ class CustomerRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
         customer.filter(_.id === id).result.headOption
     }
 
-    def getByAddress(address_id: Int): Future[Customer] = db.run {
-        customer.filter(_.address === address_id).result.head
+    def getByAddress(addressId: Int): Future[Customer] = db.run {
+        customer.filter(_.address === addressId).result.head
     }
 
     def delete(id: Int): Future[Unit] = db.run(customer.filter(_.id === id).delete).map(_ => ())
 
-    def update(id: Int, new_customer: Customer): Future[Unit] = {
-        val customerToUpdate: Customer = new_customer.copy(id)
+    def update(id: Int, newCustomer: Customer): Future[Unit] = {
+        val customerToUpdate: Customer = newCustomer.copy(id)
         db.run(customer.filter(_.id === id).update(customerToUpdate)).map(_ => ())
     }
 

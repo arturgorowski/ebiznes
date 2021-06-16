@@ -15,6 +15,8 @@ class OrderItemController @Inject()(orderItemRepository: OrderItemRepository,
                                  (implicit ec: ExecutionContext)
     extends MessagesAbstractController(controllerComponents) {
 
+    val appJson = "application/json";
+
     val cartItemFormForm: Form[CreateOrderItemForm] = Form {
         mapping(
             "order" -> number,
@@ -29,9 +31,9 @@ class OrderItemController @Inject()(orderItemRepository: OrderItemRepository,
     }
 
     // JSON METHODS
-    def getOrderItems(order_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-        orderItemRepository.getByOrder(order_id: Int).map { orderItems =>
-            Ok(Json.toJson(orderItems)).as("application/json")
+    def getOrderItems(orderId: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+        orderItemRepository.getByOrder(orderId: Int).map { orderItems =>
+            Ok(Json.toJson(orderItems)).as(appJson)
         }
     }
 
@@ -44,18 +46,18 @@ class OrderItemController @Inject()(orderItemRepository: OrderItemRepository,
 
     def getOrderItem(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         orderItemRepository.getById(id: Int).map { orderItem =>
-            Ok(Json.toJson(orderItem)).as("application/json")
+            Ok(Json.toJson(orderItem)).as(appJson)
         }
     }
 
-    def delete(id: Int, order_id: Int): Action[AnyContent] = Action {
+    def delete(id: Int, orderId: Int): Action[AnyContent] = Action {
         orderItemRepository.delete(id)
-        Redirect("/orderItems/" + order_id)
+        Redirect("/orderItems/" + orderId)
     }
 
     def addOrderItem(): Action[AnyContent] = Action { implicit request =>
-        val orderItems_json = request.body.asJson.get
-        val orderItem = orderItems_json.as[OrderItem]
+        val orderItemsJson = request.body.asJson.get
+        val orderItem = orderItemsJson.as[OrderItem]
         orderItemRepository.create(orderItem.order, orderItem.product)
         Redirect("/orderItems")
     }

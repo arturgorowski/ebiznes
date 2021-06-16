@@ -10,6 +10,13 @@ export interface Cart {
 export interface CartItem {
     id: number;
     cart: number;
-    product: Product|number;
+    product: Product;
+    productQuantity: number;
+}
+
+export interface NewCartItem {
+    id: number;
+    cart: number;
+    product: number;
     productQuantity: number;
 }

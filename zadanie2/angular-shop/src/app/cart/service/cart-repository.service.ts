@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ShopStorage} from '../../_helpers/ShopStorage';
 import {EMPTY} from 'rxjs';
-import {Cart, CartItem} from '../../_models/Cart';
+import {Cart, CartItem, NewCartItem} from '../../_models/Cart';
 
 @Injectable()
 export class CartRepositoryService {
@@ -40,7 +40,7 @@ export class CartRepositoryService {
         return this.http.get(queryUrl);
     }
 
-    addCartItem(cartItem: CartItem) {
+    addCartItem(cartItem: NewCartItem) {
         const queryUrl = environment.apiHost + '/addcartitem';
         return this.http.post(queryUrl, cartItem);
     }

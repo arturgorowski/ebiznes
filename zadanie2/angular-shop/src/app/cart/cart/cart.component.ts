@@ -44,9 +44,9 @@ export class CartComponent implements OnInit {
                     this.calculatePrice();
             });
         } else {
-            this.loadCartItems(this.cart.id).subscribe((cartItems: CartItem[]) => {
-                console.log(cartItems);
-                this.cartItems = cartItems;
+            this.loadCartItems(this.cart.id).subscribe((cartItem: CartItem[]) => {
+                console.log(cartItem);
+                this.cartItems = cartItem;
                 this.calculatePrice();
             });
         }

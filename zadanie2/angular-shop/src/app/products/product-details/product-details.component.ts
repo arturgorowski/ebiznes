@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Review} from '../../_models/Review';
 import {ShopStorage} from '../../_helpers/ShopStorage';
 import {CartRepositoryService} from '../../cart/service/cart-repository.service';
-import {Cart, CartItem} from '../../_models/Cart';
+import {Cart, CartItem, NewCartItem} from '../../_models/Cart';
 import {switchMap} from 'rxjs/operators';
 import swal from 'sweetalert2';
 
@@ -58,7 +58,7 @@ export class ProductDetailsComponent implements OnInit {
 
     addItemCart(cartId: number) {
         console.log('dodaj produkt do koszyka o id: ', cartId);
-        const cartItem: CartItem = {id: 0, cart: cartId, product: this.product.id, productQuantity: 1};
+        const cartItem: NewCartItem = {id: 0, cart: cartId, product: this.product.id, productQuantity: 1};
         return this.cartRepository.addCartItem(cartItem);
     }
 

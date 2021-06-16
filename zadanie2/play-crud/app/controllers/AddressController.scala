@@ -53,8 +53,8 @@ class AddressController @Inject()(addressRepository: AddressRepository,
     }
 
     def addProduct(): Action[AnyContent] = Action { implicit request =>
-        val address_json = request.body.asJson.get
-        val address = address_json.as[Address]
+        val addressJson = request.body.asJson.get
+        val address = addressJson.as[Address]
         addressRepository.create(address.street, address.number, address.city, address.postalCode, address.voivodeship)
         Redirect("/addresses")
     }
@@ -62,4 +62,3 @@ class AddressController @Inject()(addressRepository: AddressRepository,
 }
 
 case class CreateAddressForm(street: String, number: Int, city: String, postalCode: String, voivodeship: String)
-//case class UpdateAddressForm(id: Long, street: String, number: Int, city: String, postalCode: String, voivodeship: String)

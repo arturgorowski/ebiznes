@@ -49,8 +49,8 @@ class AddressRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)
 
     def delete(id: Int): Future[Unit] = db.run(address.filter(_.id === id).delete).map(_ => ())
 
-    def update(id: Int, new_address: Address): Future[Unit] = {
-        val addressToUpdate: Address = new_address.copy(id)
+    def update(id: Int, newAddress: Address): Future[Unit] = {
+        val addressToUpdate: Address = newAddress.copy(id)
         db.run(address.filter(_.id === id).update(addressToUpdate)).map(_ => ())
     }
 }

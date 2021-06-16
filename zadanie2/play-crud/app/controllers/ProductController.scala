@@ -16,6 +16,8 @@ class ProductController @Inject()(productRepository: ProductRepository,
                                  (implicit ec: ExecutionContext)
     extends MessagesAbstractController(controllerComponents) {
 
+    val appJson = "application/json";
+
     val productForm: Form[CreateProductForm] = Form {
         mapping(
             "name" -> nonEmptyText,
@@ -34,7 +36,7 @@ class ProductController @Inject()(productRepository: ProductRepository,
     // JSON METHODS
     def getProducts: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         productRepository.list().map { products =>
-            Ok(Json.toJson(products)).as("application/json")
+            Ok(Json.toJson(products)).as(appJson)
         }
     }
 
@@ -45,9 +47,9 @@ class ProductController @Inject()(productRepository: ProductRepository,
 //        }
 //    }
 
-    def getProductByCategory(category_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-        productRepository.getByCategory(category_id: Int).map {
-            reviews => Ok(Json.toJson(reviews)).as("application/json")
+    def getProductByCategory(categoryId: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+        productRepository.getByCategory(categoryId: Int).map {
+            reviews => Ok(Json.toJson(reviews)).as(appJson)
         }
     }
 
@@ -64,8 +66,8 @@ class ProductController @Inject()(productRepository: ProductRepository,
     }
 
     def addProduct(): Action[AnyContent] = Action { implicit request =>
-        val product_json = request.body.asJson.get
-        val product = product_json.as[Product]
+        val productJson = request.body.asJson.get
+        val product = productJson.as[Product]
         productRepository.create(product.name, product.description, product.price, product.category)
         Redirect("/products")
     }

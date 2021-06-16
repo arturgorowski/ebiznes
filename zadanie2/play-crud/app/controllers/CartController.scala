@@ -17,6 +17,8 @@ class CartController @Inject()(cartRepository: CartRepository,
                               (implicit ec: ExecutionContext)
     extends MessagesAbstractController(controllerComponents) {
 
+    val appJson = "application/json";
+
     val cartForm: Form[CreateCartForm] = Form {
         mapping(
             "customer" -> number,
@@ -33,13 +35,13 @@ class CartController @Inject()(cartRepository: CartRepository,
     // JSON METHODS
     def getCarts: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         cartRepository.list().map { carts =>
-            Ok(Json.toJson(carts)).as("application/json")
+            Ok(Json.toJson(carts)).as(appJson)
         }
     }
 
     def getCustomerCart(customer_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         cartRepository.getByCustomerOption(customer_id: Int).map {
-            case Some(cart) => Ok(Json.toJson(cart)).as("application/json")
+            case Some(cart) => Ok(Json.toJson(cart)).as(appJson)
             case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
         }
     }
@@ -60,7 +62,7 @@ class CartController @Inject()(cartRepository: CartRepository,
 
     def getCart(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         cartRepository.getById(id: Int).map {
-            carts => Ok(Json.toJson(carts)).as("application/json")
+            carts => Ok(Json.toJson(carts)).as(appJson)
         }
     }
 
@@ -70,15 +72,15 @@ class CartController @Inject()(cartRepository: CartRepository,
     }
 
     def addCart(): Action[AnyContent] = Action { implicit request =>
-        val cart_json = request.body.asJson.get
-        val cart = cart_json.as[Cart]
+        val cartJson = request.body.asJson.get
+        val cart = cartJson.as[Cart]
         Await.ready(cartRepository.create(cart.customer, cart.coupon), Duration.Inf).value.get.get
 
         val customerCart = Await.ready(cartRepository.getByCustomer(cart.customer: Int), Duration.Inf).value.get.get
 //        cartRepository.getByCustomer(cart.customer: Int).map {
 //            cart => Ok(Json.toJson(cart)).as("application/json")
 //        }
-        Ok(Json.toJson(customerCart)).as("application/json")
+        Ok(Json.toJson(customerCart)).as(appJson)
     }
 }
 

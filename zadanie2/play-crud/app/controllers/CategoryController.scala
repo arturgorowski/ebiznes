@@ -46,8 +46,8 @@ class CategoryController @Inject()(categoryRepository: CategoryRepository,
     }
 
     def addCategory(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-        val category_json = request.body.asJson.get
-        val category = category_json.as[Category]
+        val categoryJson = request.body.asJson.get
+        val category = categoryJson.as[Category]
         categoryRepository.create(category.name)
         Ok("Created")
     }

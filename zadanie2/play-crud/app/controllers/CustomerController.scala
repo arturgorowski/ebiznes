@@ -54,8 +54,8 @@ class CustomerController @Inject()(customerRepository: CustomerRepository,
     }
 
     def addCustomer(): Action[AnyContent] = Action { implicit request =>
-        val customer_json = request.body.asJson.get
-        val customer = customer_json.as[Customer]
+        val customerJson = request.body.asJson.get
+        val customer = customerJson.as[Customer]
         customerRepository.create(customer.username, customer.firstName, customer.lastName, customer.password, customer.createdAt, customer.address)
         Redirect("/customers")
     }

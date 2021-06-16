@@ -21,6 +21,8 @@ class ReviewController @Inject()(reviewRepository: ReviewRepository,
                                 (implicit ec: ExecutionContext)
     extends MessagesAbstractController(controllerComponents) {
 
+    val appJson = "application/json";
+
     val reviewForm: Form[CreateReviewForm] = Form {
         mapping(
             "customer" -> number,
@@ -66,9 +68,9 @@ class ReviewController @Inject()(reviewRepository: ReviewRepository,
         }
     }
 
-    def getCustomerReviews(customer_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-        reviewRepository.getByCustomer(customer_id: Int).map {
-            case Some(reviews) => Ok(Json.toJson(reviews)).as("application/json")
+    def getCustomerReviews(customerId: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+        reviewRepository.getByCustomer(customerId: Int).map {
+            case Some(reviews) => Ok(Json.toJson(reviews)).as(appJson)
             case None => Ok(Json.toJson(AnyContentAsEmpty.asJson))
         }
     }
@@ -80,9 +82,9 @@ class ReviewController @Inject()(reviewRepository: ReviewRepository,
 //        }
 //    }
 
-    def getProductReviews(product_id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-        reviewRepository.getByProduct(product_id: Int).map {
-            reviews => Ok(Json.toJson(reviews)).as("application/json")
+    def getProductReviews(productId: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+        reviewRepository.getByProduct(productId: Int).map {
+            reviews => Ok(Json.toJson(reviews)).as(appJson)
         }
     }
 
