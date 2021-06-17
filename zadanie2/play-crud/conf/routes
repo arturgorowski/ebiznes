@@ -94,3 +94,9 @@ GET         /customerreviews/:customer_id                controllers.ReviewContr
 GET         /productreviews/:product_id                  controllers.ReviewController.getProductReviews(product_id: Int)
 GET         /deletereview/:id                            controllers.ReviewController.delete(id: Int)
 POST        /addreview                                   controllers.ReviewController.addReview()
+
+# Authentication
+POST        /signUp                                      controllers.SignUpController.signUp
+POST        /signIn                                      controllers.SignInController.signIn
+POST        /signOut                                     controllers.SignInController.signOut
+GET         /authenticate/:provider                      controllers.SocialAuthController.authenticate(provider: String)
