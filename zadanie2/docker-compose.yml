@@ -8,11 +8,11 @@ services:
       - ./play-crud:/home/arturgorowski/projekt/play-crud
     working_dir: /home/arturgorowski/projekt/play-crud
     command: bash -c "source /home/arturgorowski/.sdkman/bin/sdkman-init.sh && sbt run"
-  frontend:
-    build: .
-    ports:
-      - 4201:4201
-    volumes:
-      - ./angular-shop:/home/arturgorowski/projekt/angular-shop
-    working_dir: /home/arturgorowski/projekt/angular-shop
-    command: bash -c "npm install && ng serve --port 4201"
+#  frontend:
+#    build: .
+#    ports:
+#      - 4201:4201
+#    volumes:
+#      - ./angular-shop:/home/arturgorowski/projekt/angular-shop
+#    working_dir: /home/arturgorowski/projekt/angular-shop
+#    command: bash -c "npm install && ng serve --port 4201"
