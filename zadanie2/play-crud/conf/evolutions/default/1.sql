@@ -12,9 +12,9 @@ CREATE TABLE "address"
 
 CREATE TABLE "cart"
 (
-    "id"                 INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "customer"           INTEGER  NOT NULL,
-    "coupon"             INTEGER  NOT NULL,
+    "id"       INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "customer" INTEGER NOT NULL,
+    "coupon"   INTEGER NOT NULL,
     FOREIGN KEY (coupon) references coupon (id),
     FOREIGN KEY (customer) references customer (id)
 );
@@ -48,22 +48,21 @@ CREATE TABLE "coupon"
 
 CREATE TABLE "customer"
 (
-    "id"        INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "username"  VARCHAR  NOT NULL,
-    "firstName" VARCHAR  NOT NULL,
-    "lastName"  VARCHAR  NOT NULL,
-    "password"  VARCHAR  NOT NULL,
-    "createdAt" DATETIME NOT NULL,
-    "address"   INTEGER  NOT NULL,
+    "id"        INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "username"  VARCHAR NOT NULL,
+    "firstName" VARCHAR NULL,
+    "lastName"  VARCHAR NULL,
+    "userId"    INTEGER NOT NULL,
+    "address"   INTEGER NULL,
     FOREIGN KEY (address) references address (id)
 );
 
 CREATE TABLE "order"
 (
-    "id"              INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "customer"        INTEGER  NOT NULL,
-    "totalOrderValue" DECIMAL  NOT NULL,
-    "coupon"          INTEGER  NOT NULL,
+    "id"              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "customer"        INTEGER NOT NULL,
+    "totalOrderValue" DECIMAL NOT NULL,
+    "coupon"          INTEGER NOT NULL,
     FOREIGN KEY (customer) references customer (id),
     FOREIGN KEY (coupon) references coupon (id)
 );
@@ -79,11 +78,11 @@ CREATE TABLE "order_item"
 
 CREATE TABLE "product"
 (
-    "id"       INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "name"     VARCHAR NOT NULL,
-    "description"     TEXT    NOT NULL,
-    "price"    DECIMAL NOT NULL,
-    "category" INTEGER NOT NULL,
+    "id"          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name"        VARCHAR NOT NULL,
+    "description" TEXT    NOT NULL,
+    "price"       DECIMAL NOT NULL,
+    "category"    INTEGER NOT NULL,
     FOREIGN KEY (category) references category (id)
 );
 

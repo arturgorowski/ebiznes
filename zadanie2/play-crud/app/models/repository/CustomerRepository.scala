@@ -25,26 +25,24 @@ class CustomerRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
 
         def lastName = column[String]("lastName")
 
-        def password = column[String]("password")
-
-        def createdAt = column[String]("createdAt")
+        def userId = column[Int]("userId")
 
         def address = column[Int]("address")
 
         def addressFk = foreignKey("address_fk", address, addressVal)(_.id)
 
-        def * = (id, username, firstName, lastName, password, createdAt, address) <> ((Customer.apply _).tupled, Customer.unapply)
+        def * = (id, username, firstName, lastName, userId, address) <> ((Customer.apply _).tupled, Customer.unapply)
     }
 
     import addressRepository.AddressTable
     private val customer = TableQuery[CustomerTable]
     val addressVal = TableQuery[AddressTable]
 
-    def create(username: String, firstName: String, lastName: String, password: String, createdAt: String, address: Int): Future[Customer] = db.run {
-        (customer.map(c => (c.username, c.firstName, c.lastName, c.password, c.createdAt, c.address))
+    def create(username: String, firstName: String, lastName: String, userId: Int, address: Int): Future[Customer] = db.run {
+        (customer.map(c => (c.username, c.firstName, c.lastName, c.userId, c.address))
             returning customer.map(_.id)
-            into {case((username, firstName, lastName, password, createdAt, address), id) => Customer(id, username, firstName, lastName, password, createdAt, address)}
-            ) += (username, firstName, lastName, password, createdAt, address)
+            into {case((username, firstName, lastName, userId, address), id) => Customer(id, username, firstName, lastName, userId, address)}
+            ) += (username, firstName, lastName, userId, address)
     }
 
     def list(): Future[Seq[Customer]] = db.run {
@@ -57,6 +55,10 @@ class CustomerRepository @Inject() (dbConfigProvider: DatabaseConfigProvider,
 
     def getByIdOption(id: Int): Future[Option[Customer]] = db.run {
         customer.filter(_.id === id).result.headOption
+    }
+
+    def getByUserId(userId: Int): Future[Option[Customer]] = db.run {
+        customer.filter(_.userId === userId).result.headOption
     }
 
     def getByAddress(addressId: Int): Future[Customer] = db.run {

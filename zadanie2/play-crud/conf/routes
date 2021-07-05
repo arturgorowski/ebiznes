@@ -56,6 +56,7 @@ GET         /customers/form                              controllers.CustomerCon
 
 GET         /customers                                   controllers.CustomerController.getCustomers()
 GET         /customer/:id                                controllers.CustomerController.getCustomer(id: Int)
+GET         /customeruser/:id                            controllers.CustomerController.getCustomerByUserId(id: Int)
 GET         /deletecustomer/:id                          controllers.CustomerController.delete(id: Int)
 POST        /addcustomer                                 controllers.CustomerController.addCustomer()
 

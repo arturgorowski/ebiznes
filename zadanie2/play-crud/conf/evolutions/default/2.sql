@@ -73,8 +73,8 @@ VALUES
      1199, 5
     );
 
-INSERT INTO "customer" ("username", "firstName", "lastName", "password", "createdAt", "address")
-VALUES ("art.gorowski@gmail.com", "Artur", "Górowski", "haslo123", "2021-06-04 14:00:00", 1);
+INSERT INTO "customer" ("username", "firstName", "lastName", "userId", "address")
+VALUES ("art.gorowski@gmail.com", "Artur", "Górowski", 1, 1);
 
 INSERT INTO "review" ("product", "customer", "content", "score")
 VALUES

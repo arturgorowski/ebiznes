@@ -6,8 +6,7 @@ case class Customer(id: Int,
                     username: String,
                     firstName: String,
                     lastName: String,
-                    password: String,
-                    createdAt: String,
+                    userId: Int,
                     address: Int
                    )
 

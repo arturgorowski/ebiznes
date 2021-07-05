@@ -8,7 +8,8 @@ import play.api.libs.json.Json
 import play.api.mvc._
 
 import javax.inject._
-import scala.concurrent.ExecutionContext
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext}
 
 
 @Singleton
@@ -17,13 +18,15 @@ class CustomerController @Inject()(customerRepository: CustomerRepository,
                                   (implicit ec: ExecutionContext)
     extends MessagesAbstractController(controllerComponents) {
 
+    val appJson = "application/json";
+
+
     val productForm: Form[CreateCustomerForm] = Form {
         mapping(
             "username" -> nonEmptyText,
             "firstName" -> nonEmptyText,
             "lastName" -> nonEmptyText,
-            "password" -> nonEmptyText,
-            "createdAt" -> nonEmptyText,
+            "userId" -> number,
             "address" -> number,
         )(CreateCustomerForm.apply)(CreateCustomerForm.unapply)
     }
@@ -37,12 +40,19 @@ class CustomerController @Inject()(customerRepository: CustomerRepository,
     // JSON METHODS
     def getCustomers: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         customerRepository.list().map { products =>
-            Ok(Json.toJson(products)).as("application/json")
+            Ok(Json.toJson(products)).as(appJson)
         }
     }
 
     def getCustomer(id: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
         customerRepository.getByIdOption(id: Int).map {
+            case Some(customers) => Ok(Json.toJson(customers))
+            case None => Redirect(routes.CustomerController.getCustomers())
+        }
+    }
+
+    def getCustomerByUserId(userId: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+        customerRepository.getByUserId(userId: Int).map {
             case Some(customers) => Ok(Json.toJson(customers))
             case None => Redirect(routes.CustomerController.getCustomers())
         }
@@ -56,9 +66,12 @@ class CustomerController @Inject()(customerRepository: CustomerRepository,
     def addCustomer(): Action[AnyContent] = Action { implicit request =>
         val customerJson = request.body.asJson.get
         val customer = customerJson.as[Customer]
-        customerRepository.create(customer.username, customer.firstName, customer.lastName, customer.password, customer.createdAt, customer.address)
-        Redirect("/customers")
+
+        Await.ready(customerRepository.create(customer.username, customer.firstName, customer.lastName, customer.userId, customer.address), Duration.Inf).value.get.get
+
+        val customerObj = Await.ready(customerRepository.getByUserId(customer.userId: Int), Duration.Inf).value.get.get
+        Ok(Json.toJson(customerObj)).as(appJson)
     }
 }
 
-case class CreateCustomerForm(username: String, firstName: String, lastName: String, password: String, createdAt: String, address: Int)
+case class CreateCustomerForm(username: String, firstName: String, lastName: String, userId: Int, address: Int)
