@@ -1,7 +1,0 @@
-@(orderItems: Seq[OrderItem])
-
-@for(orderItem <- orderItems) {
-    <div style="padding-bottom: 10px">
-        @orderItem.id. @orderItem.order, @orderItem.product
-    </div>
-}

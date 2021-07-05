@@ -1,7 +1,0 @@
-@(reviews: Seq[Review])
-
-@for(review <- reviews) {
-    <div style="padding-bottom: 10px">
-        @review.id. @review.product, @review.customer, @review.content, @review.score
-    </div>
-}

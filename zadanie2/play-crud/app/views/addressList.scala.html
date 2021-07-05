@@ -1,7 +1,0 @@
-@(addresses: Seq[Address])
-
-@for(address <- addresses) {
-    <div style="padding-bottom: 10px">
-        @address.id. @address.street, @address.number - @address.postalCode @address.city, @address.voivodeship
-    </div>
-}

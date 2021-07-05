@@ -1,7 +1,0 @@
-@(products: Seq[Product])
-
-@for(product <- products) {
-    <div style="padding-bottom: 10px">
-        @product.id. @product.name, @product.description, @product.price @product.category
-    </div>
-}
