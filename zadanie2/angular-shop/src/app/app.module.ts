@@ -12,7 +12,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { ProductBoxComponent } from './products/product-box/product-box.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from '../material/material.module';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CategoryBarComponent } from './category/category-bar/category-bar.component';
 import {CategoryResolveService} from './category/service/category-resolve.service';
 import {CategoryRepositoryService} from './category/service/category-repository.service';
@@ -32,6 +32,10 @@ import {CartResolveService} from './cart/service/cart-resolve.service';
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material/snack-bar';
 import { CartItemComponent } from './cart/cart-item/cart-item.component';
 import { OrderDetailsComponent } from './orders/order-details/order-details.component';
+import { LoginComponent } from './login/login.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { CustomerComponent } from './customer/customer.component';
+import {CustomerRepositoryService} from './customer/service/customer-repository.service';
 
 @NgModule({
     declarations: [
@@ -47,7 +51,10 @@ import { OrderDetailsComponent } from './orders/order-details/order-details.comp
         ReviewsListComponent,
         ReviewDetailsComponent,
         CartItemComponent,
-        OrderDetailsComponent
+        OrderDetailsComponent,
+        LoginComponent,
+        RegistrationComponent,
+        CustomerComponent
     ],
     imports: [
         BrowserModule,
@@ -55,7 +62,8 @@ import { OrderDetailsComponent } from './orders/order-details/order-details.comp
         HttpClientModule,
         BrowserAnimationsModule,
         MaterialModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [
         {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {panelClass: 'custom-snackbar', verticalPosition: 'top', duration: 5000}},
@@ -71,7 +79,8 @@ import { OrderDetailsComponent } from './orders/order-details/order-details.comp
         OrderRepositoryService,
         OrdersResolveService,
         CartRepositoryService,
-        CartResolveService
+        CartResolveService,
+        CustomerRepositoryService
     ],
     bootstrap: [AppComponent]
 })

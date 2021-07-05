@@ -8,6 +8,7 @@ import {CartRepositoryService} from '../../cart/service/cart-repository.service'
 import {Cart, NewCartItem} from '../../_models/Cart';
 import {switchMap} from 'rxjs/operators';
 import swal from 'sweetalert2';
+import {CustomerStorage} from '../../_helpers/CustomerStorage';
 
 @Component({
     selector: 'app-product-details',
@@ -44,13 +45,19 @@ export class ProductDetailsComponent implements OnInit {
         const cartId = ShopStorage.getCart();
         console.log(cartId);
         if (!cartId) {
-            const newCart: Cart = {id: 0, customer: 1, coupon: 1};
-            this.cartRepository.addCart(newCart)
-                .pipe(switchMap((cart: Cart) => {
-                    console.log(cart);
-                    ShopStorage.setCart(cart.id);
-                    return this.addItemCart(cart.id);
-                })).subscribe(result => this.productAddedToCart(result));
+            const user = CustomerStorage.getUser();
+            if (user) {
+                const newCart: Cart = {id: 0, customer: 1, coupon: 1};
+                this.cartRepository.addCart(newCart)
+                    .pipe(switchMap((cart: Cart) => {
+                        console.log(cart);
+                        ShopStorage.setCart(cart.id);
+                        return this.addItemCart(cart.id);
+                    })).subscribe(result => this.productAddedToCart(result));
+            } else {
+                swal('Aby dodać produkt do koszyka muszisz się zalogować!');
+                this.router.navigate(['/login']);
+            }
         } else {
             this.addItemCart(cartId).subscribe(result => this.productAddedToCart(result));
         }

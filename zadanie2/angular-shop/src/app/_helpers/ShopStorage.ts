@@ -1,5 +1,5 @@
 
-const KEY_SHOP = 'shop';
+const KEY_SHOP = 'shop_ebiznes';
 const KEY_CART = 'cart';
 
 interface Shop {

@@ -12,6 +12,9 @@ import {ReviewsListComponent} from './reviews/reviews-list/reviews-list.componen
 import {ReviewsResolveService} from './reviews/service/reviews-resolve.service';
 import {OrdersResolveService} from './orders/service/orders-resolve.service';
 import {CartResolveService} from './cart/service/cart-resolve.service';
+import {LoginComponent} from './login/login.component';
+import {RegistrationComponent} from './registration/registration.component';
+import {CustomerComponent} from './customer/customer.component';
 
 
 const routes: Routes = [
@@ -75,6 +78,18 @@ const routes: Routes = [
                 resolve: {reviews: ReviewsResolveService}
             }
         ]
+    },
+    {
+        path: 'login',
+        component: LoginComponent
+    },
+    {
+        path: 'register',
+        component: RegistrationComponent
+    },
+    {
+        path: 'profile',
+        component: CustomerComponent
     }
 ];
 

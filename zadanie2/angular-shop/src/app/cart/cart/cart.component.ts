@@ -8,6 +8,8 @@ import {Order} from '../../_models/Order';
 import {OrderRepositoryService} from '../../orders/service/order-repository.service';
 import swal from 'sweetalert2';
 import {Product} from '../../_models/Product';
+import {CustomerStorage} from '../../_helpers/CustomerStorage';
+import {Customer} from '../../_models/Customer';
 
 @Component({
     selector: 'app-cart',
@@ -33,7 +35,7 @@ export class CartComponent implements OnInit {
         this.cart = this.route.snapshot.data.cart;
         console.log(this.cart);
         if (!this.cart) {
-            this.cartRepository.getCustomerCart(1)
+            this.cartRepository.getCustomerCart(this.cart.customer)
                 .pipe(switchMap((cart: Cart) => {
                     ShopStorage.setCart(cart.id);
                     this.cart = cart;
@@ -70,14 +72,28 @@ export class CartComponent implements OnInit {
     }
 
     order() {
-        const products: Product[] = [];
-        this.cartItems.forEach((cartItem: CartItem) => products.push(cartItem.product));
-        console.log(products);
-        const newOrder: Order = {id: 0, customer: 1, totalOrderValue: this.totalProductPrice, coupon: 1, cartId: this.cart.id, products};
-        this.orderRepository.addOrder(newOrder).subscribe(result => {
-            swal(result);
-            ShopStorage.removeShopItem();
-            this.router.navigate(['/orders']);
-        });
+        const user: Customer = CustomerStorage.getUser();
+        console.log(user);
+        if (user) {
+            const products: Product[] = [];
+            this.cartItems.forEach((cartItem: CartItem) => products.push(cartItem.product));
+            console.log(products);
+            const newOrder: Order = {
+                id: 0,
+                customer: user.id,
+                totalOrderValue: this.totalProductPrice,
+                coupon: 1,
+                cartId: this.cart.id,
+                products
+            };
+            this.orderRepository.addOrder(newOrder).subscribe(result => {
+                swal(result);
+                ShopStorage.removeShopItem();
+                this.router.navigate(['/orders']);
+            });
+        } else {
+            swal('Aby złożyć zamówienie musisz się zalogować!');
+            this.router.navigate(['/login']);
+        }
     }
 }

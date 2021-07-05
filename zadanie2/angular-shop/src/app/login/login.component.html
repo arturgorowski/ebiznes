@@ -1,0 +1,34 @@
+<div class="l-container">
+    <div class="l-grid">
+        <div class="l-col-12 login">
+
+            <div class="heading">Logowanie</div>
+
+            <form [formGroup]="loginForm">
+
+                <mat-form-field class="form-input">
+                    <mat-label>E-mail</mat-label>
+                    <input matInput type="email" formControlName="login">
+                    <mat-error *ngIf="login.hasError('email')">E-mail jest niepoprawny</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-input">
+                    <mat-label>Hasło</mat-label>
+                    <input matInput type="password" formControlName="loginPassword">
+                </mat-form-field>
+
+                <div class="button">
+                    <button class="c-btn__standard c-btn__standard--orange-red"
+                            [disabled]="disableLoginButton || loginForm.invalid"
+                            (click)="onLoginSubmit()">Zaloguj się</button>
+                </div>
+
+                <div class="register">
+                    <div [routerLink]="['/register']">Nie masz konta? Zarejestruj się!</div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
