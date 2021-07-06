@@ -25,15 +25,10 @@ RUN adduser arturgorowski sudo
 
 USER arturgorowski
 WORKDIR /home/arturgorowski/
-RUN curl -s "https://get.sdkman.io" | bash
-RUN chmod a+x "/home/arturgorowski/.sdkman/bin/sdkman-init.sh"
-RUN bash -c "source /home/arturgorowski/.sdkman/bin/sdkman-init.sh && sdk install java 8.0.272.hs-adpt"
-RUN bash -c "source /home/arturgorowski/.sdkman/bin/sdkman-init.sh && sdk install sbt 1.5.2"
-RUN bash -c "source /home/arturgorowski/.sdkman/bin/sdkman-init.sh && sdk install scala 2.12.13"
 
 RUN mkdir projekt
 WORKDIR /home/arturgorowski/projekt/
 
-CMD ["sbt", "run"]
+CMD ["npm", "build"]
 #RUN bash -c "source /home/arturgorowski/.sdkman/bin/sdkman-init.sh && sbt new playframework/play-scala-seed.g8"
 
