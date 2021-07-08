@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v1
       with:
         registry: https://index.docker.io/v1/
-        username: ${{ secrets.AzureAppService_ContainerUsername_7a6faac06ba944929752c9e42fd9b8f0 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_025e4832d6a34523ad44c4b0cf6c9997 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_02b891d3af5f4ab1b5cab0e1f4311f63 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_ee7e1372235d48c18fb9a995bdb9de25 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_7a6faac06ba944929752c9e42fd9b8f0 }}/ebiznes-backend:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_02b891d3af5f4ab1b5cab0e1f4311f63 }}/ebiznes-backend:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'arturgorowski-backend-ebiznes'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_974b70d827074a738a431fa8f1daf1bd }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_7a6faac06ba944929752c9e42fd9b8f0 }}/ebiznes-backend:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_bf62ff2038f1422b9737a15a57d9d67a }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_02b891d3af5f4ab1b5cab0e1f4311f63 }}/ebiznes-backend:${{ github.sha }}'
