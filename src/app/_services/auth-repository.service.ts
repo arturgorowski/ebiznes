@@ -22,6 +22,11 @@ export class AuthRepositoryService {
         });
     }
 
+    signInWithGoogle() {
+        const queryUrl = environment.apiHost + '/authenticate/google';
+        return this.http.get(queryUrl);
+    }
+
     signOut() {
         const queryUrl = environment.apiHost + '/signOut';
         return this.http.post(queryUrl, {});

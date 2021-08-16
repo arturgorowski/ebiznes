@@ -8,6 +8,7 @@ import {CustomerRepositoryService} from '../customer/service/customer-repository
 import {Customer} from '../_models/Customer';
 import {Router} from '@angular/router';
 import {AuthenticateBase} from '../_helpers/AuthenticateBase';
+import {environment} from "../../environments/environment";
 
 const REGISTER_DATA = {
     email: '',
@@ -53,6 +54,11 @@ export class RegistrationComponent extends AuthenticateBase implements OnInit {
                 swal('Konto o podanych danych już istnieje. Spróbuj ponownie.');
                 this.disableRegisterButton = false;
             });
+    }
+
+    onGoogleRegisterSubmit() {
+        this.authRepository.signInWithGoogle().subscribe();
+        // window.location.href = environment.apiHost + '/authenticate/google';
     }
 
     initRegisterForm() {
