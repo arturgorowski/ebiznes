@@ -57,8 +57,8 @@ export class RegistrationComponent extends AuthenticateBase implements OnInit {
     }
 
     onGoogleRegisterSubmit() {
-        this.authRepository.signInWithGoogle().subscribe();
-        // window.location.href = environment.apiHost + '/authenticate/google';
+        // this.authRepository.signInWithGoogle().subscribe();
+        window.location.href = environment.apiHost + '/authenticate/google';
     }
 
     initRegisterForm() {
