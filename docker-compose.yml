@@ -5,6 +5,13 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - ./play-crud:/home/arturgorowski/ebiznes/play-crud
-    working_dir: /home/arturgorowski/ebiznes/play-crud
-    command: bash -c "sbt run"
+      - ./play-crud:/home/arturgorowski/projekt/play-crud
+    working_dir: /home/arturgorowski/projekt/play-crud
+    command: bash -c "source /home/arturgorowski/.sdkman/bin/sdkman-init.sh && sbt run"
+
+
+
+#    volumes:
+#      - ./play-crud:/home/arturgorowski/ebiznes/play-crud
+#    working_dir: /home/arturgorowski/ebiznes/play-crud
+#    command: bash -c "sbt run"
